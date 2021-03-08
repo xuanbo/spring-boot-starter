@@ -1,0 +1,3 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+tk.fishfish.rest.autoconfigure.ApiResultResponseAutoConfiguration,\
+tk.fishfish.rest.autoconfigure.GlobalExceptionHandlerAutoConfiguration
