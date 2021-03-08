@@ -2,6 +2,10 @@
 
 > 自用 spring boot starter
 
+## 版本
+
+- Spring Boot 2.3.7.RELEASE
+
 ## 模块
 
 - [mybatis-spring-boot-starter](./mybatis-spring-boot-starter)
@@ -15,6 +19,12 @@
 
   - 统一返回格式包装
   - 统一业务异常处理
+
+- [json-spring-boot-starter](./json-spring-boot-starter)
+
+  - json 读写（基于 jackson 库）
+  - json path (基于 com.jayway.jsonpath 库)
+  - json 脚本提取（groovy 脚本）
 
 ## 依赖
 

@@ -118,6 +118,7 @@
     <modules>
         <module>mybatis-spring-boot-starter</module>
         <module>rest-spring-boot-starter</module>
+        <module>json-spring-boot-starter</module>
     </modules>
 
 </project>
