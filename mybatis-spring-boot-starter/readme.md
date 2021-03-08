@@ -8,7 +8,7 @@
 <dependency>
     <groupId>tk.fishfish</groupId>
     <artifactId>mybatis-spring-boot-starter</artifactId>
-    <version>1.2.0.RELEASE</version>
+    <version>1.5.0-SNAPSHOT</version>
 </dependency>
 ```
 

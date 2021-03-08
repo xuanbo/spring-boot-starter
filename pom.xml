@@ -7,10 +7,6 @@
     <groupId>tk.fishfish</groupId>
     <artifactId>spring-boot-starter</artifactId>
     <version>1.5.0-SNAPSHOT</version>
-    <modules>
-        <module>mybatis-spring-boot-starter</module>
-        <module>rest-spring-boot-starter</module>
-    </modules>
 
     <packaging>pom</packaging>
 
@@ -118,5 +114,10 @@
             </plugin>
         </plugins>
     </build>
+
+    <modules>
+        <module>mybatis-spring-boot-starter</module>
+        <module>rest-spring-boot-starter</module>
+    </modules>
 
 </project>
