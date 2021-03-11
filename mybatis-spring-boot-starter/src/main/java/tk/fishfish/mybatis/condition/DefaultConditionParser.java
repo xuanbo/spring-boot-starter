@@ -41,24 +41,24 @@ public class DefaultConditionParser implements ConditionParser {
 
     @Override
     public Condition parse(Class<? extends Entity> entityClazz, Object condition) {
-        Condition c = new Condition(entityClazz);
+        Condition cond = new Condition(entityClazz);
         if (condition == null) {
-            return c;
+            return cond;
         }
         if (condition instanceof Map) {
-            Example.Criteria criteria = c.and();
+            Example.Criteria criteria = cond.and();
             ((Map<?, ?>) condition).forEach((k, v) -> criteria.andEqualTo(k.toString(), v));
         } else {
             Class<?> clazz = condition.getClass();
             List<FieldCondition> fieldConditions = conditionCache.computeIfAbsent(clazz, (key) -> parseFieldCondition(clazz));
             if (CollectionUtils.isEmpty(fieldConditions)) {
-                return c;
+                return cond;
             }
             for (FieldCondition fieldCondition : fieldConditions) {
-                buildCriteria(condition, fieldCondition, c.and());
+                buildCriteria(condition, fieldCondition, cond.and());
             }
         }
-        return c;
+        return cond;
     }
 
     private List<FieldCondition> parseFieldCondition(Class<?> clazz) {

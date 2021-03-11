@@ -86,13 +86,18 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Transactional(rollbackFor = Exception.class)
     public void insert(T entity) {
         entity.setId(generateId());
+        beforeInsert(entity);
         repository.insert(entity);
+        afterInsert(entity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertSelective(T entity) {
         entity.setId(generateId());
+        beforeInsert(entity);
         repository.insertSelective(entity);
+        afterInsert(entity);
     }
 
     @Override
@@ -101,15 +106,20 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
         if (entity.getId() == null) {
             throw new MapperException("更新时主键必须指定");
         }
+        beforeUpdate(entity);
         repository.updateByPrimaryKey(entity);
+        afterUpdate(entity);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void updateSelective(T entity) {
         if (entity.getId() == null) {
             throw new MapperException("更新时主键必须指定");
         }
+        beforeUpdate(entity);
         repository.updateByPrimaryKeySelective(entity);
+        afterUpdate(entity);
     }
 
     @Override
@@ -117,10 +127,9 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     public void save(T entity) {
         String id = entity.getId();
         if (id == null) {
-            entity.setId(generateId());
-            repository.insert(entity);
+            insert(entity);
         } else {
-            repository.updateByPrimaryKey(entity);
+            update(entity);
         }
     }
 
@@ -157,6 +166,38 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
      */
     protected String generateId() {
         return UUID.randomUUID().toString().replaceAll("-", "");
+    }
+
+    /**
+     * Insert前调用
+     *
+     * @param entity 实体
+     */
+    protected void beforeInsert(T entity) {
+    }
+
+    /**
+     * Insert后调用
+     *
+     * @param entity 实体
+     */
+    protected void afterInsert(T entity) {
+    }
+
+    /**
+     * Update前调用
+     *
+     * @param entity 实体
+     */
+    protected void beforeUpdate(T entity) {
+    }
+
+    /**
+     * Update后调用
+     *
+     * @param entity 实体
+     */
+    protected void afterUpdate(T entity) {
     }
 
 }

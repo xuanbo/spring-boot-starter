@@ -23,4 +23,20 @@ public class BizException extends RuntimeException {
         this.code = code;
     }
 
+    public static BizException of(Integer code, String msg) {
+        return new BizException(code, msg);
+    }
+
+    public static BizException of(Integer code, String msg, Object... args) {
+        return new BizException(code, String.format(msg, args));
+    }
+
+    public static BizException of(Integer code, String msg, Throwable throwable) {
+        return new BizException(code, msg, throwable);
+    }
+
+    public static BizException of(Integer code, String msg, Throwable throwable, Object... args) {
+        return new BizException(code, String.format(msg, args), throwable);
+    }
+
 }

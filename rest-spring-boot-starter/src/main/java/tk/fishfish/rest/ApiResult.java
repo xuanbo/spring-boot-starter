@@ -5,13 +5,18 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * api响应
+ * API响应
  *
  * @author 奔波儿灞
  * @since 1.0.0
  */
 @Data
 public class ApiResult<T> implements Serializable {
+
+    /**
+     * 成功或失败
+     */
+    private Boolean success;
 
     /**
      * -1，代表全局异常处理的错误
@@ -33,7 +38,8 @@ public class ApiResult<T> implements Serializable {
     private ApiResult() {
     }
 
-    private ApiResult(Integer code, String msg, T data) {
+    private ApiResult(Boolean success, Integer code, String msg, T data) {
+        this.success = success;
         this.code = code;
         this.msg = msg;
         this.data = data;
@@ -47,7 +53,7 @@ public class ApiResult<T> implements Serializable {
      * @return Api
      */
     public static <T> ApiResult<T> ok(T data) {
-        return new ApiResult<>(0, null, data);
+        return new ApiResult<>(true, 0, null, data);
     }
 
     /**
@@ -58,7 +64,19 @@ public class ApiResult<T> implements Serializable {
      * @return ApiResult
      */
     public static ApiResult<Void> fail(Integer code, String msg) {
-        return new ApiResult<>(code, msg, null);
+        return fail(code, msg, null);
+    }
+
+    /**
+     * 失败
+     *
+     * @param code 业务错误码
+     * @param msg  信息
+     * @param data 数据
+     * @return ApiResult
+     */
+    public static <T> ApiResult<T> fail(Integer code, String msg, T data) {
+        return new ApiResult<>(false, code, msg, data);
     }
 
 }
