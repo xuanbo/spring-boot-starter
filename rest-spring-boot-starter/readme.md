@@ -63,9 +63,11 @@ public class DemoController {
 }
 ```
 
+## 版本
+
 ### 1.5.0-SNAPSHOT
 
-迁移到 github 包管理
+- BizException.of 构造异常
 
 ### 1.1.0.RELEASE
 

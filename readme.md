@@ -26,27 +26,54 @@
   - json path (基于 com.jayway.jsonpath 库)
   - json 脚本提取（groovy 脚本）
 
+- [oauth2-spring-boot-starter](./oauth2-spring-boot-starter)
+
+ - @EnableResourceServer 开启资源服务器
+ - @EnableAuthorizationServer 开启认证服务器
+
 ## 依赖
 
-在 pom.xml 中指定使用的 repository 地址
+- 在 maven 的 settings.xml 文件 (～/.m2/settings.xml) 中增加 Github 认证，[配置文档](https://docs.github.com/en/packages/guides/configuring-apache-maven-for-use-with-github-packages)
 
-```xml
-<repositories>
-  <repository>
-    <id>github</id>
-    <url>https://maven.pkg.github.com/xuanbo/spring-boot-starter</url>
-  </repository>
-</repositories>
-```
+  ```xml
+  <settings xmlns="http://maven.apache.org/SETTINGS/1.0.0"
+            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+            xsi:schemaLocation="http://maven.apache.org/SETTINGS/1.0.0
+                        http://maven.apache.org/xsd/settings-1.0.0.xsd">
+  
+    <servers>
+      <server>
+        <id>github</id>
+        <!-- 你的 GitHub 账号 -->
+        <username>USERNAME</username>
+        <!-- 申请到的 TOKEN -->
+        <!-- 在该 https://github.com/settings/tokens 地址下的 Personal access tokens 中创建一个，赋予 write:packages 权限 -->
+        <password>TOKEN</password>
+      </server>
+    </servers>
+  
+  </settings>
+  ```
 
-然后依赖使用到的模块
+- 在项目 pom.xml 中指定该仓库地址
 
-```xml
-<dependencies>
-  <dependency>
-    <groupId>tk.fishfish</groupId>
-    <artifactId>rest-spring-boot-starter</artifactId>
-    <version>使用到的版本</version>
-  </dependency>
-</dependencies>
-```
+  ```xml
+  <repositories>
+    <repository>
+      <id>github</id>
+      <url>https://maven.pkg.github.com/xuanbo/spring-boot-starter</url>
+    </repository>
+  </repositories>
+  ```
+
+- 依赖使用到的模块，比如：
+
+  ```xml
+  <dependencies>
+    <dependency>
+      <groupId>tk.fishfish</groupId>
+      <artifactId>rest-spring-boot-starter</artifactId>
+      <version>使用到的版本</version>
+    </dependency>
+  </dependencies>
+  ```
