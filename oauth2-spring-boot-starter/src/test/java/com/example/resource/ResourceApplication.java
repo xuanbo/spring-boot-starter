@@ -2,7 +2,7 @@ package com.example.resource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tk.fishfish.oauth2.configuration.EnableResourceServer;
+import tk.fishfish.oauth2.EnableResourceServer;
 
 /**
  * 资源服务

@@ -2,17 +2,17 @@ package com.example.authorization;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import tk.fishfish.oauth2.configuration.EnableAuthorizationServer;
-import tk.fishfish.oauth2.configuration.EnableResourceServer;
+import tk.fishfish.oauth2.EnableAuthorizationServer;
+import tk.fishfish.oauth2.EnableResourceServer;
 
 /**
- * 认证服务
+ * 认证服务，注意 {@link EnableAuthorizationServer} 必须在 {@link EnableResourceServer} 前面使用
  *
  * @author 奔波儿灞
  * @version 1.5.0
  */
-@EnableResourceServer
 @EnableAuthorizationServer
+@EnableResourceServer
 @SpringBootApplication
 public class AuthorizationApplication {
 

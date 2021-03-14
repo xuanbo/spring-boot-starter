@@ -45,6 +45,14 @@ public interface BaseService<T extends Entity> {
      * 条件查询
      *
      * @param condition 条件
+     * @return 数据
+     */
+    T single(Object condition);
+
+    /**
+     * 条件查询
+     *
+     * @param condition 条件
      * @return 条数
      */
     long count(Object condition);

@@ -10,7 +10,7 @@
         <version>1.5.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>oauth-spring-boot-starter</artifactId>
+    <artifactId>oauth2-spring-boot-starter</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

@@ -1,7 +1,8 @@
 package tk.fishfish.oauth2.configuration.authorization;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.redis.connection.RedisConnectionFactory;
@@ -13,7 +14,9 @@ import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
+import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStoreSerializationStrategy;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
+import tk.fishfish.oauth2.token.JdkSerializationStrategy;
 
 import java.util.Collections;
 
@@ -28,7 +31,7 @@ import java.util.Collections;
 public class AuthorizationConfiguration {
 
     @Bean
-    @ConditionalOnClass
+    @ConditionalOnMissingBean
     public UserDetailsService userDetailsService() {
         // 永远返回当前用户，密码为123456
         log.warn("由于你没有自定义 {} , 默认配置永远返回当前用户，密码为123456的实现", UserDetailsService.class.getName());
@@ -36,7 +39,7 @@ public class AuthorizationConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass
+    @ConditionalOnMissingBean
     public PasswordEncoder passwordEncoder() {
         // 密码永远123456，永远校验通过
         log.warn("由于你没有自定义 {} , 默认配置密码永远123456，永远校验通过的实现", PasswordEncoder.class.getName());
@@ -54,7 +57,7 @@ public class AuthorizationConfiguration {
     }
 
     @Bean
-    @ConditionalOnClass
+    @ConditionalOnMissingBean
     public ClientDetailsServiceProvider clientDetailsServiceProvider() throws Exception {
         log.warn("由于你没有自定义 {} , 默认配置基于内存的客户端管理", ClientDetailsServiceProvider.class.getName());
         return clientId -> {
@@ -65,8 +68,15 @@ public class AuthorizationConfiguration {
     }
 
     @Bean
-    public TokenStore tokenStore(RedisConnectionFactory redisConnectionFactory) {
-        return new RedisTokenStore(redisConnectionFactory);
+    public TokenStore tokenStore(
+            RedisConnectionFactory redisConnectionFactory,
+            AuthorizationServerProperties properties,
+            @Autowired(required = false) RedisTokenStoreSerializationStrategy strategy
+    ) {
+        RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
+        tokenStore.setPrefix(properties.getTokenPrefix());
+        tokenStore.setSerializationStrategy(strategy == null ? new JdkSerializationStrategy() : strategy);
+        return tokenStore;
     }
 
     @Bean

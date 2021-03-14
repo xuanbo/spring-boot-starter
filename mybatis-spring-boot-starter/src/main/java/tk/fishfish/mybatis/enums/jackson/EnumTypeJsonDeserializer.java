@@ -1,7 +1,6 @@
 package tk.fishfish.mybatis.enums.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
@@ -11,6 +10,7 @@ import tk.fishfish.mybatis.util.ReflectUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.util.Map;
 
 /**
  * 枚举反序列化
@@ -21,13 +21,27 @@ import java.lang.reflect.Field;
 public class EnumTypeJsonDeserializer extends JsonDeserializer<Enum<?>> {
 
     @Override
-    public Enum<?> deserialize(JsonParser parser, DeserializationContext context) throws IOException, JsonProcessingException {
+    @SuppressWarnings("unchecked")
+    public Enum<?> deserialize(JsonParser parser, DeserializationContext context) throws IOException {
         JsonToken t = parser.getCurrentToken();
         String value;
         if (t == JsonToken.VALUE_STRING) {
             value = parser.getValueAsString();
         } else if (t == JsonToken.VALUE_NUMBER_INT) {
             value = parser.getIntValue() + "";
+        } else if (t == JsonToken.START_OBJECT) {
+            // 对象 {"name":"男","value":"0"}
+            Map<String, Object> map = parser.readValueAs(Map.class);
+            Object name = map.get("name");
+            if (name == null) {
+                Object ori = map.get("value");
+                if (ori == null) {
+                    throw MismatchedInputException.from(parser, EnumType.class, "枚举反序列化不匹配: " + parser.readValueAsTree().toString());
+                }
+                value = ori.toString();
+            } else {
+                value = name.toString();
+            }
         } else {
             throw MismatchedInputException.from(parser, EnumType.class, "枚举反序列化不匹配: " + parser.getValueAsString());
         }

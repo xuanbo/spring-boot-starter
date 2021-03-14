@@ -41,6 +41,9 @@ public class DefaultConditionParser implements ConditionParser {
 
     @Override
     public Condition parse(Class<? extends Entity> entityClazz, Object condition) {
+        if (condition instanceof Condition) {
+            return (Condition) condition;
+        }
         Condition cond = new Condition(entityClazz);
         if (condition == null) {
             return cond;

@@ -72,6 +72,12 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     }
 
     @Override
+    public T single(Object condition) {
+        Condition cond = conditionParser.parse(entityClazz, condition);
+        return repository.selectOneByExample(cond);
+    }
+
+    @Override
     public long count(Object condition) {
         Condition cond = conditionParser.parse(entityClazz, condition);
         return repository.selectCountByExample(cond);

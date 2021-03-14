@@ -2,6 +2,7 @@ package tk.fishfish.oauth2.configuration.authorization;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
@@ -11,6 +12,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
+import tk.fishfish.oauth2.configuration.token.TokenConverterConfiguration;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
 
 /**
@@ -21,6 +23,11 @@ import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
  */
 @Slf4j
 @EnableAuthorizationServer
+@Import({
+        AuthorizationConfiguration.class,
+        WebSecurityConfiguration.class,
+        TokenConverterConfiguration.class
+})
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
     /**

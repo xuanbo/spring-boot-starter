@@ -14,6 +14,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class AuthorizationServerProperties {
 
     /**
+     * redis存储token前缀
+     */
+    private String tokenPrefix = "fish:oauth2:";
+
+    /**
      * 是否支持refresh token
      */
     private Boolean supportRefreshToken = true;

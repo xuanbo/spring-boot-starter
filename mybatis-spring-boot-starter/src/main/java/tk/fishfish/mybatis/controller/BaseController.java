@@ -21,7 +21,7 @@ import java.util.List;
 public abstract class BaseController<T extends Entity> {
 
     @Autowired
-    private BaseService<T> service;
+    protected BaseService<T> service;
 
     @GetMapping("/{id}")
     public T findById(@PathVariable String id) {

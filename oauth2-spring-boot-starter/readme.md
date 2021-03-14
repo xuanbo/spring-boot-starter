@@ -35,8 +35,8 @@ fish:
 启动
 
 ```java
-@EnableResourceServer
 @EnableAuthorizationServer
+@EnableResourceServer
 @SpringBootApplication
 public class AuthorizationApplication {
 
@@ -47,6 +47,8 @@ public class AuthorizationApplication {
 
 }
 ```
+
+注意： @EnableAuthorizationServer 必须在 @EnableResourceServer 前面使用，否则会导致配置 tokenServices 错误。
 
 #### 自定义UserDetailsService
 
@@ -68,7 +70,7 @@ public UserDetailsService userDetailsService() {
 
 可自定义 PasswordEncoder Bean 进行密码加密
 
-默认提供密码永远123456，永远校验通过的 PasswordEncoder 实现：
+默认提供密码永远 123456，永远校验通过的 PasswordEncoder 实现：
 
 ```java
 @Bean
