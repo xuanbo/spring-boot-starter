@@ -130,4 +130,11 @@ public interface BaseService<T extends Entity> {
      */
     void deleteByIds(List<String> ids);
 
+    /**
+     * 条件删除，为了防止空条件全表删除，请一定要开启
+     *
+     * @param condition 条件
+     */
+    void delete(Object condition);
+
 }

@@ -1,9 +1,35 @@
+# admin-spring-boot-starter
+
+> 后台管理接口
+
+## 功能
+
+- 认证（OAuth2）
+- 用户 
+- 角色
+
+## 依赖
+
+```xml
+<dependency>
+    <groupId>tk.fishfish</groupId>
+    <artifactId>admin-spring-boot-starter</artifactId>
+    <version>1.5.0-SNAPSHOT</version>
+</dependency>
+```
+
+## 快速使用
+
+配置：
+
+```yaml
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/fish
     username: root
     password: 123456
+  # liquibase表结构管理
   liquibase:
     enabled: true
     change-log: classpath:db/changelog/master.xml
@@ -30,6 +56,7 @@ mybatis:
 
 fish:
   oauth2:
+    # 认证服务器
     authorization:
       # token存储redis前缀
       tokenPrefix: 'fish:oauth2:'
@@ -44,3 +71,29 @@ logging:
   level:
     root: INFO
     tk.fishfish: DEBUG
+```
+
+通过 @EnableAdmin 注解开启后台管理：
+
+```java
+@EnableAdmin
+@EnableAuthorizationServer
+@EnableResourceServer
+@SpringBootApplication
+public class AdminAuthorizationApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(AdminAuthorizationApplication.class, args);
+    }
+
+}
+```
+
+## 版本
+
+### 1.5.0-SNAPSHOT
+
+- @EnableAdmin 开启后台管理特性
+- 认证（OAuth2）
+- 用户
+- 角色

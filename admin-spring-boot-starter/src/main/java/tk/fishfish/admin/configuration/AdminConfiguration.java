@@ -4,10 +4,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import tk.fishfish.admin.security.token.CustomAccessTokenConverter;
 import tk.fishfish.admin.security.token.CustomUserAuthenticationConverter;
-import tk.fishfish.mybatis.enums.EnableEnumTypes;
+import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
 
 /**
  * 后台管理配置
@@ -17,16 +21,36 @@ import tk.fishfish.mybatis.enums.EnableEnumTypes;
  */
 @MapperScan(AdminConfiguration.PACKAGE)
 @ComponentScan(AdminConfiguration.PACKAGE)
-@EnableEnumTypes(AdminConfiguration.PACKAGE)
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 class AdminConfiguration {
 
     public static final String PACKAGE = "tk.fishfish.admin";
 
+    /**
+     * 自定义AccessTokenConverter，让程序在单体、微服务情况下都能获取额外的信息
+     *
+     * @param objectMapper ObjectMapper
+     * @return CustomAccessTokenConverter
+     */
     @Bean
     public AccessTokenConverter customAccessTokenConverter(ObjectMapper objectMapper) {
         CustomAccessTokenConverter accessTokenConverter = new CustomAccessTokenConverter();
         accessTokenConverter.setUserTokenConverter(new CustomUserAuthenticationConverter(objectMapper));
         return accessTokenConverter;
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public ClientDetailsServiceProvider clientDetailsServiceProvider(PasswordEncoder passwordEncoder) {
+        return clientId -> {
+            BaseClientDetails details = new BaseClientDetails(clientId, "fish", "read,write", "password,refresh_token,authorization_code", "");
+            details.setClientSecret(passwordEncoder.encode("secret"));
+            return details;
+        };
     }
 
 }

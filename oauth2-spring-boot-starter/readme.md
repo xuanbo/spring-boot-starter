@@ -24,12 +24,14 @@
 fish:
   oauth2:
     authorization:
+      # token存储redis前缀
+      tokenPrefix: 'fish:oauth2:'
       # 是否支持refresh token
       supportRefreshToken: true
       # access_token过期时间
       accessTokenValiditySeconds: 3600
       # refresh_token过期时间
-      RefreshTokenValiditySeconds: 7200
+      refreshTokenValiditySeconds: 7200
 ```
 
 启动
@@ -58,7 +60,7 @@ public class AuthorizationApplication {
 
 ```java
 @Bean
-@ConditionalOnClass
+@ConditionalOnMissingBean
 public UserDetailsService userDetailsService() {
     // 永远返回当前用户，密码为123456
     log.warn("由于你没有自定义 {} , 默认配置永远返回当前用户，密码为123456的实现", UserDetailsService.class.getName());
@@ -74,7 +76,7 @@ public UserDetailsService userDetailsService() {
 
 ```java
 @Bean
-@ConditionalOnClass
+@ConditionalOnMissingBean
 public PasswordEncoder passwordEncoder() {
     // 密码永远123456，永远校验通过
     log.warn("由于你没有自定义 {} , 默认配置密码永远123456，永远校验通过的实现", PasswordEncoder.class.getName());
@@ -100,7 +102,7 @@ public PasswordEncoder passwordEncoder() {
 
 ```java
 @Bean
-@ConditionalOnClass
+@ConditionalOnMissingBean
 public ClientDetailsServiceProvider clientDetailsServiceProvider() throws Exception {
     log.warn("由于你没有自定义 {} , 默认配置基于内存的客户端管理", ClientDetailsServiceProvider.class.getName());
     return clientId -> {
@@ -156,5 +158,5 @@ public class ResourceApplication {
 
 ### 1.5.0-SNAPSHOT
 
-- @EnableResourceServer 开启资源服务器
 - @EnableAuthorizationServer 开启认证服务器
+- @EnableResourceServer 开启资源服务器

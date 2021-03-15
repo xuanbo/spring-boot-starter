@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "fish.oauth2.authorization")
-public class AuthorizationServerProperties {
+public class AuthorizationProperties {
 
     /**
      * redis存储token前缀

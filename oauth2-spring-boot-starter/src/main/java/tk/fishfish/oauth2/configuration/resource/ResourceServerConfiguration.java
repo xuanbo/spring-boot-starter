@@ -21,7 +21,7 @@ import java.util.Optional;
  */
 @Slf4j
 @EnableResourceServer
-@EnableConfigurationProperties(ResourceServerProperties.class)
+@EnableConfigurationProperties(ResourceProperties.class)
 @Import({
         TokenConverterConfiguration.class,
         ResourceConfiguration.class
@@ -32,7 +32,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
     private ResourceServerTokenServices tokenServices;
 
     @Autowired
-    private ResourceServerProperties properties;
+    private ResourceProperties properties;
 
     @Override
     public void configure(HttpSecurity http) throws Exception {

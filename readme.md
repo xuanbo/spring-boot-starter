@@ -31,6 +31,11 @@
  - @EnableResourceServer 开启资源服务器
  - @EnableAuthorizationServer 开启认证服务器
 
+- [admin-spring-boot-starter](./admin-spring-boot-starter)
+
+ - @EnableAdmin 开启后台管理特性
+ - 认证、用户、角色
+
 ## 依赖
 
 - 在 maven 的 settings.xml 文件 (～/.m2/settings.xml) 中增加 Github 认证，[配置文档](https://docs.github.com/en/packages/guides/configuring-apache-maven-for-use-with-github-packages)
@@ -72,7 +77,7 @@
   <dependencies>
     <dependency>
       <groupId>tk.fishfish</groupId>
-      <artifactId>rest-spring-boot-starter</artifactId>
+      <artifactId>admin-spring-boot-starter</artifactId>
       <version>使用到的版本</version>
     </dependency>
   </dependencies>

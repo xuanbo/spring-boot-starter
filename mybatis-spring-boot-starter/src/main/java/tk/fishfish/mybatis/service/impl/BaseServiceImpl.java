@@ -17,7 +17,6 @@ import tk.mybatis.mapper.entity.Condition;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.function.Supplier;
 
@@ -51,7 +50,6 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Override
     public Page<T> page(Object condition, Pageable pageable) {
         Condition cond = conditionParser.parse(entityClazz, condition);
-        PageHelper.setOrderBy(cond, Optional.ofNullable(pageable).map(Pageable::getSorts).orElse(null));
         return doPage(pageable, () -> repository.selectByExample(cond));
     }
 
@@ -67,7 +65,7 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Override
     public List<T> query(Object condition, Sort... sorts) {
         Condition cond = conditionParser.parse(entityClazz, condition);
-        PageHelper.setOrderBy(cond, sorts);
+        PageHelper.setOrderBy(cond, sorts, entityClazz);
         return repository.selectByExample(cond);
     }
 
@@ -163,6 +161,13 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
         Condition condition = new Condition(entityClazz);
         condition.and().andIn("id", ids);
         repository.deleteByExample(condition);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Object condition) {
+        Condition cond = conditionParser.parse(entityClazz, condition);
+        repository.deleteByExample(cond);
     }
 
     /**

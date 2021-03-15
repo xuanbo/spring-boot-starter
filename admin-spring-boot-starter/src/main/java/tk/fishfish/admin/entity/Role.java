@@ -1,9 +1,12 @@
 package tk.fishfish.admin.entity;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import tk.fishfish.admin.validator.Group;
 
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 /**
  * 角色
@@ -12,12 +15,15 @@ import javax.persistence.Table;
  * @version 1.5.0
  */
 @Data
-@Table(name = "sys_user")
+@Table(name = "sys_role")
 @EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role extends BaseEntity {
 
+    @NotBlank(groups = {Group.Insert.class, Group.Update.class})
     private String code;
 
+    @NotBlank(groups = {Group.Insert.class, Group.Update.class})
     private String name;
 
     private String description;

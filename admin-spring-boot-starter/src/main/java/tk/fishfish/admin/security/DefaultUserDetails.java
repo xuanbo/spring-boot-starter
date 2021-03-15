@@ -1,5 +1,6 @@
 package tk.fishfish.admin.security;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,6 +25,7 @@ import java.util.stream.Collectors;
  */
 @Setter
 @Getter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class DefaultUserDetails extends org.springframework.security.core.userdetails.User {
 
     private String id;
@@ -56,8 +58,13 @@ public class DefaultUserDetails extends org.springframework.security.core.userde
                 .orElse(false);
         // 权限
         List<SimpleGrantedAuthority> authorities = Optional.ofNullable(user.getRoles())
-                .map(roles -> roles.stream().map(Role::getCode).map(SimpleGrantedAuthority::new).collect(Collectors.toList()))
-                .orElse(Collections.emptyList());
+                .map(roles -> roles.stream()
+                        .map(Role::getCode)
+                        // 增加ROLE_前缀
+                        .map(e -> "ROLE_" + e)
+                        .map(SimpleGrantedAuthority::new)
+                        .collect(Collectors.toList())
+                ).orElse(Collections.emptyList());
         DefaultUserDetails details = new DefaultUserDetails(user.getUsername(), user.getPassword(), enable, accountNonExpired, credentialsNonExpired, !accountLock, authorities);
         // 用户信息
         details.setId(user.getId());

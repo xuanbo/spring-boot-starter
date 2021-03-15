@@ -11,7 +11,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
  */
 @Data
 @ConfigurationProperties(prefix = "fish.oauth2.resource")
-public class ResourceServerProperties {
+public class ResourceProperties {
 
     /**
      * 配置该服务的资源ID，如果认证不匹配则无法访问

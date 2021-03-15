@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import tk.fishfish.admin.entity.User;
 import tk.fishfish.admin.repository.UserRepository;
@@ -29,6 +30,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     private final UserRepository userRepository;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = Optional.ofNullable(userRepository.loadByUsername(username))
@@ -40,6 +43,8 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     protected void beforeInsert(User user) {
+        String password = passwordEncoder.encode(user.getPassword());
+        user.setPassword(password);
         user.setCreatedAt(new Date());
         user.setCreatedBy(UserContextHolder.username());
     }

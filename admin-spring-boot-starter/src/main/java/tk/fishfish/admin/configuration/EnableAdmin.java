@@ -1,6 +1,7 @@
 package tk.fishfish.admin.configuration;
 
 import org.springframework.context.annotation.Import;
+import tk.fishfish.mybatis.enums.EnableEnumTypes;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -18,5 +19,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 @Import(AdminConfiguration.class)
+@EnableEnumTypes(AdminConfiguration.PACKAGE)
 public @interface EnableAdmin {
 }

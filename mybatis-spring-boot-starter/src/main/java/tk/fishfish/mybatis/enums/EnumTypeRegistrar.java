@@ -1,6 +1,7 @@
 package tk.fishfish.mybatis.enums;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.ResourceLoaderAware;
@@ -68,7 +69,7 @@ public class EnumTypeRegistrar implements ImportBeanDefinitionRegistrar, Resourc
         return scanBasePackages;
     }
 
-    private void registerEnumTypeHandler(BeanDefinitionRegistry registry, org.springframework.beans.factory.config.BeanDefinition definition) {
+    private void registerEnumTypeHandler(BeanDefinitionRegistry registry, BeanDefinition definition) {
         String beanClassName = definition.getBeanClassName();
         if (beanClassName == null) {
             return;

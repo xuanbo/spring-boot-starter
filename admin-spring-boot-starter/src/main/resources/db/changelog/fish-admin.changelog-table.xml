@@ -65,4 +65,53 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="wxb" id="20210315-1">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sys_user WHERE username = 'admin'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="sys_user">
+            <column name="id" value="10000"/>
+            <column name="username" value="admin"/>
+            <column name="password" value="$2a$10$TeIUF0hmJQULt4/wnM70pOQi8gnswVws3nUmz9tVezPEfJBGGWEEO"/>
+            <column name="name" value="管理员"/>
+            <column name="sex" value="0"/>
+            <column name="account_expire_at" value="2099-12-12 00:00:00.000"/>
+            <column name="account_lock" value="0"/>
+            <column name="credentials_expire_at" value="2099-12-12 00:00:00.000"/>
+            <column name="enable" value="1"/>
+            <column name="created_at" value="2021-03-15 22:04:00.000"/>
+            <column name="created_by" value="admin"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="wxb" id="20210315-2">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sys_role WHERE code = 'ADMIN'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="sys_role">
+            <column name="id" value="10000"/>
+            <column name="code" value="ADMIN"/>
+            <column name="name" value="管理员"/>
+            <column name="created_at" value="2021-03-15 22:04:00.000"/>
+            <column name="created_by" value="admin"/>
+        </insert>
+    </changeSet>
+
+    <changeSet author="wxb" id="20210315-3">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sys_user_role WHERE user_id = (SELECT id FROM sys_user WHERE username = 'admin') AND role_id = (SELECT id FROM sys_role WHERE code = 'ADMIN')
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="sys_user_role">
+            <column name="id" value="10000"/>
+            <column name="user_id" value="10000"/>
+            <column name="role_id" value="10000"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

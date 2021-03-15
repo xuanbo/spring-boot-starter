@@ -1,15 +1,17 @@
 package tk.fishfish.admin.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 import tk.fishfish.admin.entity.enums.Sex;
+import tk.fishfish.admin.validator.Group;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.NotBlank;
 import java.util.Date;
 import java.util.List;
 
@@ -22,13 +24,17 @@ import java.util.List;
 @Data
 @Table(name = "sys_user")
 @EqualsAndHashCode(callSuper = true)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends BaseEntity {
 
+    @NotBlank(groups = {Group.Insert.class, Group.Update.class})
     private String username;
 
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    @NotBlank(groups = Group.Insert.class)
+    @Column(name = "password", updatable = false)
     private String password;
 
+    @NotBlank(groups = {Group.Insert.class, Group.Update.class})
     private String name;
 
     @Column(name = "sex")

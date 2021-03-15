@@ -27,7 +27,7 @@ import java.util.Collections;
  * @version 1.5.0
  */
 @Slf4j
-@EnableConfigurationProperties(AuthorizationServerProperties.class)
+@EnableConfigurationProperties(AuthorizationProperties.class)
 public class AuthorizationConfiguration {
 
     @Bean
@@ -58,7 +58,7 @@ public class AuthorizationConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ClientDetailsServiceProvider clientDetailsServiceProvider() throws Exception {
+    public ClientDetailsServiceProvider clientDetailsServiceProvider() {
         log.warn("由于你没有自定义 {} , 默认配置基于内存的客户端管理", ClientDetailsServiceProvider.class.getName());
         return clientId -> {
             BaseClientDetails details = new BaseClientDetails(clientId, "fish", "read,write", "password,refresh_token", "");
@@ -70,12 +70,16 @@ public class AuthorizationConfiguration {
     @Bean
     public TokenStore tokenStore(
             RedisConnectionFactory redisConnectionFactory,
-            AuthorizationServerProperties properties,
+            AuthorizationProperties properties,
             @Autowired(required = false) RedisTokenStoreSerializationStrategy strategy
     ) {
+        if (strategy == null) {
+            log.warn("检测到未配置 {} ，默认配置基于 jackson 的序列化规则 {}", RedisTokenStoreSerializationStrategy.class.getName(), JdkSerializationStrategy.class);
+            strategy = new JdkSerializationStrategy();
+        }
         RedisTokenStore tokenStore = new RedisTokenStore(redisConnectionFactory);
         tokenStore.setPrefix(properties.getTokenPrefix());
-        tokenStore.setSerializationStrategy(strategy == null ? new JdkSerializationStrategy() : strategy);
+        tokenStore.setSerializationStrategy(strategy);
         return tokenStore;
     }
 
@@ -83,7 +87,7 @@ public class AuthorizationConfiguration {
     public ResourceServerTokenServices tokenServices(
             TokenStore tokenStore,
             ClientDetailsServiceProvider clientDetailsService,
-            AuthorizationServerProperties properties
+            AuthorizationProperties properties
     ) {
         DefaultTokenServices tokenServices = new DefaultTokenServices();
         tokenServices.setTokenStore(tokenStore);

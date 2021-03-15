@@ -34,7 +34,7 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
         }
         // 下面让资源服务远程访问认证服务时，也能让Principal为DefaultUserDetails对象
         if (extra instanceof Map) {
-            User user = read(write(((Map<?, ?>) extra).get("user")), User.class);
+            User user = readToUser(writeToJson(((Map<?, ?>) extra).get("user")));
             user.setPassword("N/A");
             DefaultUserDetails principal = DefaultUserDetails.of(user, (Map<String, Object>) extra);
             return new UsernamePasswordAuthenticationToken(principal, "N/A", authentication.getAuthorities());
@@ -42,15 +42,15 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
         return authentication;
     }
 
-    private <T> T read(String json, Class<T> clazz) {
+    private User readToUser(String json) {
         try {
-            return objectMapper.readValue(json, clazz);
+            return objectMapper.readValue(json, User.class);
         } catch (JsonProcessingException e) {
             throw BizException.of(500, "读取json错误", e);
         }
     }
 
-    private <T> String write(T obj) {
+    private <T> String writeToJson(T obj) {
         if (obj == null) {
             return null;
         }

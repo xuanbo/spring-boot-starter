@@ -20,7 +20,7 @@ import java.util.Optional;
 public class ResourceConfiguration {
 
     @Autowired
-    private ResourceServerProperties properties;
+    private ResourceProperties properties;
 
     @Autowired
     private AccessTokenConverter accessTokenConverter;
@@ -29,8 +29,8 @@ public class ResourceConfiguration {
     @ConditionalOnMissingBean
     private ResourceServerTokenServices remoteTokenServices() {
         log.warn("由于你没有自定义 {} , 默认配置 {} 进行远程访问", ResourceServerTokenServices.class.getName(), RemoteTokenServices.class.getName());
-        ResourceServerProperties.Remote remote = Optional.ofNullable(properties.getRemote())
-                .orElse(new ResourceServerProperties.Remote());
+        ResourceProperties.Remote remote = Optional.ofNullable(properties.getRemote())
+                .orElse(new ResourceProperties.Remote());
         RemoteTokenServices tokenServices = new RemoteTokenServices();
         tokenServices.setCheckTokenEndpointUrl(remote.getCheckTokenEndpointUrl());
         tokenServices.setClientId(remote.getClientId());
