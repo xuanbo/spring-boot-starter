@@ -1,7 +1,6 @@
 package tk.fishfish.mybatis.enums;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -101,7 +100,7 @@ public class EnumTypeRegistrar implements ImportBeanDefinitionRegistrar, Resourc
         }
         int length = input.length();
 
-        val sb = new StringBuilder(length);
+        StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             char c = input.charAt(i);
             if (Character.isUpperCase(c)) {

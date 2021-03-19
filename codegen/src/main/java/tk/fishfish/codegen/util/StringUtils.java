@@ -1,8 +1,5 @@
 package tk.fishfish.codegen.util;
 
-import lombok.val;
-import lombok.var;
-
 /**
  * 字符串
  *
@@ -27,8 +24,8 @@ public final class StringUtils {
         }
         int length = input.length();
 
-        val sb = new StringBuilder(length);
-        var upperCase = false;
+        StringBuilder sb = new StringBuilder(length);
+        boolean upperCase = false;
         for (int i = 0; i < length; i++) {
             char c = input.charAt(i);
             if (c == '_') {
@@ -73,7 +70,7 @@ public final class StringUtils {
         }
         int length = input.length();
 
-        val sb = new StringBuilder(length);
+        StringBuilder sb = new StringBuilder(length);
         for (int i = 0; i < length; i++) {
             char c = input.charAt(i);
             if (Character.isUpperCase(c)) {

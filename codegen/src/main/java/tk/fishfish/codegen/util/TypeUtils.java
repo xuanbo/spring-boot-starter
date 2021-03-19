@@ -1,7 +1,6 @@
 package tk.fishfish.codegen.util;
 
 import lombok.extern.slf4j.Slf4j;
-import lombok.val;
 import tk.fishfish.codegen.dto.Table;
 
 import java.math.BigDecimal;
@@ -26,7 +25,7 @@ public final class TypeUtils {
     }
 
     public static String getFieldType(String columnType) {
-        val type = columnType.toUpperCase();
+        String type = columnType.toUpperCase();
         switch (type) {
             case "CHAR":
             case "VARCHAR":
@@ -68,7 +67,7 @@ public final class TypeUtils {
     }
 
     public static String autoImportPkg(List<Table.Column> columns) {
-        val sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder();
         columns.stream().map(Table.Column::getType).map(TypeUtils::getFieldType).collect(Collectors.toSet()).forEach(type -> {
             switch (type) {
                 case CLASS_DATE:
