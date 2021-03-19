@@ -20,6 +20,6 @@ public @interface NotIn {
      *
      * @return 字段名
      */
-    String property();
+    String property() default "";
 
 }

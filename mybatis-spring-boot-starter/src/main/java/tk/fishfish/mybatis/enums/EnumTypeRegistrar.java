@@ -1,6 +1,7 @@
 package tk.fishfish.mybatis.enums;
 
 import lombok.extern.slf4j.Slf4j;
+import lombok.val;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
@@ -82,9 +83,38 @@ public class EnumTypeRegistrar implements ImportBeanDefinitionRegistrar, Resourc
             builder.addConstructorArgValue(clazz);
             log.info("枚举 {} 自动注册TypeHandler: {}TypeHandler", clazzName, clazzName);
             registry.registerBeanDefinition(clazzName + "TypeHandler", builder.getBeanDefinition());
+            EnumConstantsHolder.add(toPath(ClassUtils.getShortName(clazzName)), clazz.getEnumConstants());
         } catch (ClassNotFoundException e) {
             log.warn("无法获取枚举类型Class", e);
         }
+    }
+
+    /**
+     * 大写转中划线
+     *
+     * @param input 大写
+     * @return 转中划线
+     */
+    private String toPath(String input) {
+        if (input == null) {
+            return null;
+        }
+        int length = input.length();
+
+        val sb = new StringBuilder(length);
+        for (int i = 0; i < length; i++) {
+            char c = input.charAt(i);
+            if (Character.isUpperCase(c)) {
+                if (i != 0) {
+                    sb.append('-');
+                }
+                sb.append(Character.toLowerCase(c));
+            } else {
+                sb.append(c);
+            }
+        }
+
+        return sb.toString();
     }
 
 }

@@ -1,5 +1,6 @@
 package tk.fishfish.rest;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 
 import java.io.Serializable;
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @since 1.0.0
  */
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResult<T> implements Serializable {
 
     /**

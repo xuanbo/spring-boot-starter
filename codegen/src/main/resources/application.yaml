@@ -1,0 +1,60 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:fish.db
+    username: root
+    password: 123456
+    # 初始化数据
+    schema: classpath:db/schema.sql
+    # data: classpath:db/data.sql
+    sql-script-encoding: utf-8
+    # NEVER
+    initialization-mode: ALWAYS
+    hikari:
+      pool-name: hikariPool
+      minimum-idle: 1
+      maximum-pool-size: 4
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+mybatis:
+  # mapper的xml位置
+  mapper-locations: classpath:mapper/*Mapper.xml
+  # 包别名
+  type-aliases-package: tk.fishfish.codegen.entity
+  configuration:
+    # 下划线转驼峰
+    map-underscore-to-camel-case: true
+  # 分⻚
+  page-helper:
+    helper-dialect: mysql
+    reasonable: "true"
+    params: count=countSql
+  # 通用mapper
+  mapper:
+    mappers:
+      - tk.fishfish.mybatis.repository.Repository
+    not-empty: true
+
+fish:
+  codegen:
+    author: 迷途小码农
+    templates:
+      # 模板 -> 生成 java 代码路径
+      # ${pkg} 包名转化后的路径
+      # ${entity} 实体名称
+      # ${separator} 文件分割符
+      entity: ${pkg}${separator}entity${separator}${entity}.java
+      condition: ${pkg}${separator}condition${separator}${entity}Condition.java
+      repository: ${pkg}${separator}repository${separator}${entity}Repository.java
+      service: ${pkg}${separator}service${separator}${entity}Service.java
+      serviceImpl: ${pkg}${separator}service${separator}impl${separator}${entity}ServiceImpl.java
+      controller: ${pkg}${separator}controller${separator}${entity}Controller.java
+
+logging:
+  level:
+    root: INFO
+    tk.fishfish: DEBUG

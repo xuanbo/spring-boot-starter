@@ -4,6 +4,7 @@ import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,12 +30,13 @@ public class ApiResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
     public Object beforeBodyWrite(Object body, MethodParameter methodParameter,
                                   MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass,
                                   ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        // ResponseEntity，则不包装
-        if (body instanceof ResponseEntity) {
+        // ResponseEntity、ApiResult则不包装
+        if (body instanceof ResponseEntity || body instanceof ApiResult) {
             return body;
         }
-        // ApiResult，也不包装
-        if (body instanceof ApiResult) {
+        // @since 1.5.0
+        // 防止 java.lang.ClassCastException: tk.fishfish.rest.ApiResult cannot be cast to java.lang.String
+        if (aClass.isAssignableFrom(StringHttpMessageConverter.class)) {
             return body;
         }
         // todo 基本数据类型是否特殊处理

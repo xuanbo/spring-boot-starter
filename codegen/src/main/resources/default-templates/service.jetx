@@ -1,0 +1,9 @@
+package ${pkg}.service;
+
+import ${pkg}.entity.${entity};
+
+/**
+ * created by ${author}
+ */
+public interface ${entity}Service {
+}

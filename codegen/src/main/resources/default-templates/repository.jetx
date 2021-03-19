@@ -1,0 +1,12 @@
+package ${pkgPrefix}.domain;
+
+import com.egova.data.service.AbstractRepositoryBase;
+import ${pkgPrefix}.entity.${entity};
+import org.springframework.cache.annotation.CacheConfig;
+
+/**
+ * created by ${author}
+ */
+@CacheConfig(cacheNames = ${entity}.NAME)
+public interface ${entity}Repository extends AbstractRepositoryBase<${entity}, String> {
+}

@@ -1,0 +1,21 @@
+package ${pkg}.condition;
+
+import lombok.Data;
+import tk.fishfish.mybatis.condition.annotation.Eq;
+
+${tk.fishfish.codegen.util.TypeUtils::autoImportPkg(columns)}
+/**
+ * created by ${author}
+ */
+@Data
+public class ${entity}Condition {
+
+#for (tk.fishfish.codegen.dto.Table.Column column : columns)
+    /**
+     * ${column.remark}
+     */
+    @Eq
+    private ${tk.fishfish.codegen.util.TypeUtils::getFieldType(column.type)} ${tk.fishfish.codegen.util.StringUtils::toCamelCase(column.name)};
+
+#end
+}

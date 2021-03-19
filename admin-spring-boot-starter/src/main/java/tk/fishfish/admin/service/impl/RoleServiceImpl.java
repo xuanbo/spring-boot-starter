@@ -1,12 +1,17 @@
 package tk.fishfish.admin.service.impl;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import tk.fishfish.admin.entity.Role;
+import tk.fishfish.admin.entity.UserRole;
+import tk.fishfish.admin.repository.UserRoleRepository;
 import tk.fishfish.admin.security.UserContextHolder;
 import tk.fishfish.admin.service.RoleService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
+import tk.mybatis.mapper.entity.Condition;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * 角色
@@ -15,7 +20,26 @@ import java.util.Date;
  * @version 1.5.0
  */
 @Service
+@RequiredArgsConstructor
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
+
+    private final UserRoleRepository userRoleRepository;
+
+    @Override
+    public void deleteById(String id) {
+        Condition condition = new Condition(UserRole.class);
+        condition.createCriteria().andEqualTo("userId", id);
+        userRoleRepository.deleteByExample(condition);
+        super.deleteById(id);
+    }
+
+    @Override
+    public void deleteByIds(List<String> ids) {
+        Condition condition = new Condition(UserRole.class);
+        condition.createCriteria().andIn("userId", ids);
+        userRoleRepository.deleteByExample(condition);
+        super.deleteByIds(ids);
+    }
 
     @Override
     protected void beforeInsert(Role role) {

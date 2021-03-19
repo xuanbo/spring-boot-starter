@@ -1,6 +1,6 @@
 # spring-boot-starter
 
-> 自用 spring boot starter
+> 自用 spring boot starter ，后台开发利器
 
 ## 版本
 
@@ -26,15 +26,26 @@
   - json path (基于 com.jayway.jsonpath 库)
   - json 脚本提取（groovy 脚本）
 
+- [redis-spring-boot-starter](./redis-spring-boot-starter)
+
+  - redis jackson 序列化
+  - redis 缓存 key 规则修改
+
 - [oauth2-spring-boot-starter](./oauth2-spring-boot-starter)
 
- - @EnableResourceServer 开启资源服务器
- - @EnableAuthorizationServer 开启认证服务器
+  - @EnableResourceServer 开启资源服务器
+  - @EnableAuthorizationServer 开启认证服务器
 
 - [admin-spring-boot-starter](./admin-spring-boot-starter)
 
- - @EnableAdmin 开启后台管理特性
- - 认证、用户、角色
+  - @EnableAdmin 开启后台管理特性
+  - 认证、用户、角色
+
+- [codegen](./codegen)
+
+  - 可视化代码生成器服务，适配 admin-spring-boot-starter 模块约定
+  - 内嵌 sqlite ，连接外部数据库（MySQL）进行代码生成
+  - 自定义模板
 
 ## 依赖
 

@@ -20,7 +20,7 @@ public @interface NotLike {
      *
      * @return 字段名
      */
-    String property();
+    String property() default "";
 
     /**
      * 模糊策略

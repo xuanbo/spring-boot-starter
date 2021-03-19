@@ -145,7 +145,7 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Override
     public List<T> findByIds(List<String> ids) {
         Condition condition = new Condition(entityClazz);
-        condition.and().andIn("id", ids);
+        condition.createCriteria().andIn("id", ids);
         return repository.selectByExample(condition);
     }
 
@@ -159,7 +159,7 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Transactional(rollbackFor = Exception.class)
     public void deleteByIds(List<String> ids) {
         Condition condition = new Condition(entityClazz);
-        condition.and().andIn("id", ids);
+        condition.createCriteria().andIn("id", ids);
         repository.deleteByExample(condition);
     }
 

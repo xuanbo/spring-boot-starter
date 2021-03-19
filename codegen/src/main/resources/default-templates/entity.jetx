@@ -1,0 +1,40 @@
+package ${pkg}.entity;
+
+#if (tk.fishfish.codegen.util.TypeUtils::hasDate(columns))
+import com.fasterxml.jackson.annotation.JsonFormat;
+#end
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+#if (tk.fishfish.codegen.util.TypeUtils::hasDate(columns))
+import org.springframework.format.annotation.DateTimeFormat;
+#end
+import tk.fishfish.mybatis.entity.Entity;
+
+import javax.persistence.Column;
+import javax.persistence.Table;
+${tk.fishfish.codegen.util.TypeUtils::autoImportPkg(columns)}
+/**
+ * created by ${author}
+ */
+@Data
+@Table(name = "${name}")
+@EqualsAndHashCode(callSuper = true)
+public class ${entity} extends Entity {
+
+    public static final String NAME = "${entity}";
+#for (tk.fishfish.codegen.dto.Table.Column column : columns)
+#if (column.name != "id")
+
+    /**
+     * ${column.remark}
+     */
+    @Column(name = "${column.name}")
+    #if (tk.fishfish.codegen.util.TypeUtils::isDate(column.type))
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
+    #end
+    private ${tk.fishfish.codegen.util.TypeUtils::getFieldType(column.type)} ${tk.fishfish.codegen.util.StringUtils::toCamelCase(column.name)};
+#end
+#end
+
+}

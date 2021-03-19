@@ -1,6 +1,7 @@
 package tk.fishfish.mybatis.condition;
 
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 import tk.fishfish.mybatis.condition.annotation.Eq;
 import tk.fishfish.mybatis.condition.annotation.Gt;
 import tk.fishfish.mybatis.condition.annotation.Gte;
@@ -49,7 +50,7 @@ public class DefaultConditionParser implements ConditionParser {
             return cond;
         }
         if (condition instanceof Map) {
-            Example.Criteria criteria = cond.and();
+            Example.Criteria criteria = cond.createCriteria();
             ((Map<?, ?>) condition).forEach((k, v) -> criteria.andEqualTo(k.toString(), v));
         } else {
             Class<?> clazz = condition.getClass();
@@ -107,42 +108,63 @@ public class DefaultConditionParser implements ConditionParser {
             case EQ:
                 if (value != null) {
                     property = ((Eq) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     criteria.andEqualTo(property, value);
                 }
                 break;
             case NOT_EQ:
                 if (value != null) {
                     property = ((NotEq) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     criteria.andNotEqualTo(property, value);
                 }
                 break;
             case GT:
                 if (value != null) {
                     property = ((Gt) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     criteria.andGreaterThan(property, value);
                 }
                 break;
             case GTE:
                 if (value != null) {
                     property = ((Gte) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     criteria.andGreaterThanOrEqualTo(property, value);
                 }
                 break;
             case LT:
                 if (value != null) {
                     property = ((Lt) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     criteria.andGreaterThan(property, value);
                 }
                 break;
             case LTE:
                 if (value != null) {
                     property = ((Lte) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     criteria.andGreaterThanOrEqualTo(property, value);
                 }
                 break;
             case IN:
                 if (value != null) {
                     property = ((In) fieldCondition.getAnnotation()).property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     if (value.getClass().isArray()) {
                         criteria.andIn(property, Arrays.stream((Object[]) value).collect(Collectors.toList()));
                     } else if (value instanceof Iterable) {
@@ -154,6 +176,9 @@ public class DefaultConditionParser implements ConditionParser {
                 break;
             case NOT_IN:
                 property = ((NotIn) fieldCondition.getAnnotation()).property();
+                if (StringUtils.isEmpty(property)) {
+                    property = fieldCondition.getField().getName();
+                }
                 if (value.getClass().isArray()) {
                     criteria.andIn(property, Arrays.stream((Object[]) value).collect(Collectors.toList()));
                 } else if (value instanceof Iterable) {
@@ -165,41 +190,55 @@ public class DefaultConditionParser implements ConditionParser {
             case LIKE:
                 if (value != null) {
                     Like like = (Like) fieldCondition.getAnnotation();
+                    property = like.property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
                     switch (like.policy()) {
                         case LEFT:
-                            criteria.andLike(like.property(), "%" + value.toString());
+                            criteria.andLike(property, "%" + value.toString());
                             break;
                         case RIGHT:
-                            criteria.andLike(like.property(), value.toString() + "%");
+                            criteria.andLike(property, value.toString() + "%");
                             break;
                         case ALL:
-                            criteria.andLike(like.property(), "%" + value.toString() + "%");
+                            criteria.andLike(property, "%" + value.toString() + "%");
                             break;
                     }
                 }
                 break;
             case NOT_LIKE:
                 if (value != null) {
-                    NotLike like = (NotLike) fieldCondition.getAnnotation();
-                    switch (like.policy()) {
+                    NotLike notLike = (NotLike) fieldCondition.getAnnotation();
+                    property = notLike.property();
+                    if (StringUtils.isEmpty(property)) {
+                        property = fieldCondition.getField().getName();
+                    }
+                    switch (notLike.policy()) {
                         case LEFT:
-                            criteria.andNotLike(like.property(), "%" + value.toString());
+                            criteria.andNotLike(property, "%" + value.toString());
                             break;
                         case RIGHT:
-                            criteria.andNotLike(like.property(), value.toString() + "%");
+                            criteria.andNotLike(property, value.toString() + "%");
                             break;
                         case ALL:
-                            criteria.andNotLike(like.property(), "%" + value.toString() + "%");
+                            criteria.andNotLike(property, "%" + value.toString() + "%");
                             break;
                     }
                 }
                 break;
             case IS_NULL:
                 property = ((IsNull) fieldCondition.getAnnotation()).property();
+                if (StringUtils.isEmpty(property)) {
+                    property = fieldCondition.getField().getName();
+                }
                 criteria.andIsNull(property);
                 break;
             case IS_NOT_NULL:
                 property = ((IsNotNull) fieldCondition.getAnnotation()).property();
+                if (StringUtils.isEmpty(property)) {
+                    property = fieldCondition.getField().getName();
+                }
                 criteria.andIsNull(property);
                 break;
         }

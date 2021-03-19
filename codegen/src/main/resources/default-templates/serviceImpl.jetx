@@ -1,0 +1,23 @@
+package ${pkg}.service.impl;
+
+import ${pkg}.domain.${entity}Repository;
+import ${pkg}.entity.${entity};
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
+
+import javax.annotation.Priority;
+
+/**
+ * created by ${author}
+ */
+@Slf4j
+@Service
+@Priority(5)
+@RequiredArgsConstructor
+public class ${entity}ServiceImpl extends BaseServiceImpl<${entity}> implements ${entity}Service {
+
+    private final ${entity}Repository ${tk.fishfish.codegen.util.StringUtils::toProperty(entity)}Repository;
+
+}

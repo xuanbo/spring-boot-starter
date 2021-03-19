@@ -1,0 +1,1 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=tk.fishfish.redis.autoconfigure.RedisAutoConfiguration
