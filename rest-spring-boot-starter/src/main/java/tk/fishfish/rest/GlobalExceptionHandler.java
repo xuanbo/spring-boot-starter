@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -52,6 +53,15 @@ public class GlobalExceptionHandler {
         Integer code = e.getCode();
         String msg = e.getMessage();
         return ApiResult.fail(code, msg);
+    }
+
+    @ExceptionHandler(HttpException.class)
+    public ResponseEntity<ApiResult<Void>> handleHttpException(HttpException e) {
+        LOG.warn("handle HttpException", e);
+        HttpStatus status = e.getStatus();
+        Integer code = e.getCode();
+        String msg = e.getMessage();
+        return ResponseEntity.status(status).body(ApiResult.fail(code, msg));
     }
 
     @ExceptionHandler(Exception.class)

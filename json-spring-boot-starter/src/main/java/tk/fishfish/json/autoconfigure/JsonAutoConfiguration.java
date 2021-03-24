@@ -12,6 +12,7 @@ import tk.fishfish.json.JacksonJsonPath;
 import tk.fishfish.json.Json;
 import tk.fishfish.json.JsonExtractor;
 import tk.fishfish.json.JsonPath;
+import tk.fishfish.json.util.JSON;
 
 /**
  * json configuration
@@ -26,7 +27,9 @@ public class JsonAutoConfiguration {
 
     @Bean
     public Json json(ObjectMapper objectMapper) {
-        return new JacksonJson(objectMapper);
+        JacksonJson json = new JacksonJson(objectMapper);
+        JSON.setJson(json);
+        return json;
     }
 
     @Bean
