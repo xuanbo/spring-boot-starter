@@ -10,7 +10,7 @@
         <version>1.5.0-SNAPSHOT</version>
     </parent>
 
-    <artifactId>code-generator</artifactId>
+    <artifactId>codegen</artifactId>
     <packaging>jar</packaging>
 
     <dependencies>

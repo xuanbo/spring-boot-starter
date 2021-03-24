@@ -17,6 +17,8 @@ public interface Json {
 
     List<Map<String, Object>> readList(String json);
 
+    <T> List<T> readList(String json, Class<T> clazz);
+
     <T> String write(T obj);
 
 }
