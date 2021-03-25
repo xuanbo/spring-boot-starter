@@ -39,6 +39,15 @@ fish:
       accessTokenValiditySeconds: 3600
       # refresh_token过期时间
       refreshTokenValiditySeconds: 7200
+  actuator:
+    http:
+      timeout: 1000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
 
 logging:
   level:

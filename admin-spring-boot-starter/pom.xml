@@ -39,6 +39,11 @@
             <artifactId>json-spring-boot-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>tk.fishfish</groupId>
+            <artifactId>actuator-spring-boot-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate.validator</groupId>

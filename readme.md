@@ -37,6 +37,10 @@
   - @EnableResourceServer 开启资源服务器
   - @EnableAuthorizationServer 开启认证服务器
 
+- [actuator-spring-boot-starter](./actuator-spring-boot-starter)
+
+  - 指标监控
+
 - [admin-spring-boot-starter](./admin-spring-boot-starter)
 
   - @EnableAdmin 开启后台管理特性
