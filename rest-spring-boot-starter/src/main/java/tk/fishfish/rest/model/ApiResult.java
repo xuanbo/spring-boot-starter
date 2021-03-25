@@ -1,4 +1,4 @@
-package tk.fishfish.rest;
+package tk.fishfish.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;

@@ -23,8 +23,9 @@
 - [json-spring-boot-starter](./json-spring-boot-starter)
 
   - json 读写（基于 jackson 库）
-  - json path (基于 com.jayway.jsonpath 库)
+  - json path（基于 com.jayway.jsonpath 库）
   - json 脚本提取（groovy 脚本）
+  - 统一 JSON 工具类
 
 - [redis-spring-boot-starter](./redis-spring-boot-starter)
 

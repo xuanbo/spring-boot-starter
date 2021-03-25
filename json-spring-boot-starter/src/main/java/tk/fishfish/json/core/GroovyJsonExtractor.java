@@ -1,7 +1,8 @@
-package tk.fishfish.json;
+package tk.fishfish.json.core;
 
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
+import tk.fishfish.json.exception.JsonException;
 
 /**
  * groovy json extractor

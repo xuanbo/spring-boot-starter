@@ -1,4 +1,4 @@
-package tk.fishfish.rest;
+package tk.fishfish.rest.annotation;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;

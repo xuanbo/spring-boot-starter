@@ -1,12 +1,13 @@
-# jsonlib
+# json-spring-boot-starter
 
 > json 业务库，方便业务统一使用
 
 ## 功能
 
 - json 读写（基于 jackson 库）
-- json path (基于 com.jayway.jsonpath 库)
+- json path（基于 com.jayway.jsonpath 库）
 - json 脚本提取（groovy 脚本）
+- 统一 JSON 工具类
 
 ## 使用
 
@@ -35,6 +36,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import tk.fishfish.json.core.Json;
 
 import java.util.Map;
 
@@ -119,6 +121,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import tk.fishfish.json.autoconfigure.JsonAutoConfiguration;
+import tk.fishfish.json.core.JsonPath;
 
 import java.util.List;
 import java.util.Map;
@@ -132,60 +136,117 @@ import java.util.Map;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {
         JacksonAutoConfiguration.class,
-        JsonConfiguration.class
+        JsonAutoConfiguration.class
 })
 public class JsonPathTest {
 
-    private final Logger logger = LoggerFactory.getLogger(JsonPathTest.class);
+  private final Logger logger = LoggerFactory.getLogger(JsonPathTest.class);
 
-    @Autowired
-    private JsonPath jsonPath;
+  @Autowired
+  private JsonPath jsonPath;
 
-    @Test
-    public void read() {
-        String json = "{\n" +
-                "    \"store\": {\n" +
-                "        \"book\": [\n" +
-                "            {\n" +
-                "                \"category\": \"reference\",\n" +
-                "                \"author\": \"Nigel Rees\",\n" +
-                "                \"title\": \"Sayings of the Century\",\n" +
-                "                \"price\": 8.95\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"category\": \"fiction\",\n" +
-                "                \"author\": \"Evelyn Waugh\",\n" +
-                "                \"title\": \"Sword of Honour\",\n" +
-                "                \"price\": 12.99\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"category\": \"fiction\",\n" +
-                "                \"author\": \"Herman Melville\",\n" +
-                "                \"title\": \"Moby Dick\",\n" +
-                "                \"isbn\": \"0-553-21311-3\",\n" +
-                "                \"price\": 8.99\n" +
-                "            },\n" +
-                "            {\n" +
-                "                \"category\": \"fiction\",\n" +
-                "                \"author\": \"J. R. R. Tolkien\",\n" +
-                "                \"title\": \"The Lord of the Rings\",\n" +
-                "                \"isbn\": \"0-395-19395-8\",\n" +
-                "                \"price\": 22.99\n" +
-                "            }\n" +
-                "        ],\n" +
-                "        \"bicycle\": {\n" +
-                "            \"color\": \"red\",\n" +
-                "            \"price\": 19.95\n" +
-                "        }\n" +
-                "    },\n" +
-                "    \"expensive\": 10\n" +
-                "}";
-        List<Map<String, Object>> list = jsonPath.readList(json, "$.store.book");
-        logger.info("list: {}", list);
+  @Test
+  public void read() {
+    String json = "{\n" +
+            "    \"store\": {\n" +
+            "        \"book\": [\n" +
+            "            {\n" +
+            "                \"category\": \"reference\",\n" +
+            "                \"author\": \"Nigel Rees\",\n" +
+            "                \"title\": \"Sayings of the Century\",\n" +
+            "                \"price\": 8.95\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"category\": \"fiction\",\n" +
+            "                \"author\": \"Evelyn Waugh\",\n" +
+            "                \"title\": \"Sword of Honour\",\n" +
+            "                \"price\": 12.99\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"category\": \"fiction\",\n" +
+            "                \"author\": \"Herman Melville\",\n" +
+            "                \"title\": \"Moby Dick\",\n" +
+            "                \"isbn\": \"0-553-21311-3\",\n" +
+            "                \"price\": 8.99\n" +
+            "            },\n" +
+            "            {\n" +
+            "                \"category\": \"fiction\",\n" +
+            "                \"author\": \"J. R. R. Tolkien\",\n" +
+            "                \"title\": \"The Lord of the Rings\",\n" +
+            "                \"isbn\": \"0-395-19395-8\",\n" +
+            "                \"price\": 22.99\n" +
+            "            }\n" +
+            "        ],\n" +
+            "        \"bicycle\": {\n" +
+            "            \"color\": \"red\",\n" +
+            "            \"price\": 19.95\n" +
+            "        }\n" +
+            "    },\n" +
+            "    \"expensive\": 10\n" +
+            "}";
+    List<Map<String, Object>> list = jsonPath.readList(json, "$.store.book");
+    logger.info("list: {}", list);
 
-        Map<String, Object> map = jsonPath.readMap(json, "$.store.bicycle");
-        logger.info("map: {}", map);
+    List<Book> books = jsonPath.readList(json, "$.store.book", Book.class);
+    logger.info("books: {}", books);
+
+    Map<String, Object> map = jsonPath.readMap(json, "$.store.bicycle");
+    logger.info("map: {}", map);
+  }
+
+  public static class Book {
+
+    private String category;
+
+    private String author;
+
+    private String title;
+
+    private Double price;
+
+    public String getCategory() {
+      return category;
     }
+
+    public void setCategory(String category) {
+      this.category = category;
+    }
+
+    public String getAuthor() {
+      return author;
+    }
+
+    public void setAuthor(String author) {
+      this.author = author;
+    }
+
+    public String getTitle() {
+      return title;
+    }
+
+    public void setTitle(String title) {
+      this.title = title;
+    }
+
+    public Double getPrice() {
+      return price;
+    }
+
+    public void setPrice(Double price) {
+      this.price = price;
+    }
+
+    @Override
+    public String toString() {
+      return "Book{" +
+              "category='" + category + '\'' +
+              ", author='" + author + '\'' +
+              ", title='" + title + '\'' +
+              ", price=" + price +
+              '}';
+    }
+
+  }
 
 }
 ```
@@ -207,6 +268,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import tk.fishfish.json.core.JsonExtractor;
 
 /**
  * json extractor tests
@@ -301,7 +363,8 @@ public class JsonExtractorTest {
 
 ### 1.5.0-SNAPSHOT
 
-迁移到 github 包管理
+- 迁移到 github 包管理
+- 统一 JSON 工具类
 
 ### 1.0.0.RELEASE
 

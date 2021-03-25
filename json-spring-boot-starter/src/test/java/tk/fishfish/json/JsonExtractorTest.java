@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import tk.fishfish.json.autoconfigure.JsonAutoConfiguration;
+import tk.fishfish.json.core.JsonExtractor;
 
 /**
  * json extractor tests

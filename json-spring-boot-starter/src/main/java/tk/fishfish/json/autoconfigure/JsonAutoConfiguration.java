@@ -6,12 +6,12 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tk.fishfish.json.GroovyJsonExtractor;
-import tk.fishfish.json.JacksonJson;
-import tk.fishfish.json.JacksonJsonPath;
-import tk.fishfish.json.Json;
-import tk.fishfish.json.JsonExtractor;
-import tk.fishfish.json.JsonPath;
+import tk.fishfish.json.core.GroovyJsonExtractor;
+import tk.fishfish.json.core.JacksonJson;
+import tk.fishfish.json.core.JacksonJsonPath;
+import tk.fishfish.json.core.Json;
+import tk.fishfish.json.core.JsonExtractor;
+import tk.fishfish.json.core.JsonPath;
 import tk.fishfish.json.util.JSON;
 
 /**
@@ -34,7 +34,9 @@ public class JsonAutoConfiguration {
 
     @Bean
     public JsonPath jsonPath(ObjectMapper objectMapper) {
-        return new JacksonJsonPath(objectMapper);
+        JacksonJsonPath jsonPath = new JacksonJsonPath(objectMapper);
+        JSON.setJsonPath(jsonPath);
+        return jsonPath;
     }
 
     @Bean

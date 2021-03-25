@@ -9,6 +9,7 @@ import org.springframework.boot.autoconfigure.jackson.JacksonAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import tk.fishfish.json.autoconfigure.JsonAutoConfiguration;
+import tk.fishfish.json.core.JsonPath;
 
 import java.util.List;
 import java.util.Map;
@@ -73,8 +74,65 @@ public class JsonPathTest {
         List<Map<String, Object>> list = jsonPath.readList(json, "$.store.book");
         logger.info("list: {}", list);
 
+        List<Book> books = jsonPath.readList(json, "$.store.book", Book.class);
+        logger.info("books: {}", books);
+
         Map<String, Object> map = jsonPath.readMap(json, "$.store.bicycle");
         logger.info("map: {}", map);
+    }
+
+    public static class Book {
+
+        private String category;
+
+        private String author;
+
+        private String title;
+
+        private Double price;
+
+        public String getCategory() {
+            return category;
+        }
+
+        public void setCategory(String category) {
+            this.category = category;
+        }
+
+        public String getAuthor() {
+            return author;
+        }
+
+        public void setAuthor(String author) {
+            this.author = author;
+        }
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
+
+        public Double getPrice() {
+            return price;
+        }
+
+        public void setPrice(Double price) {
+            this.price = price;
+        }
+
+        @Override
+        public String toString() {
+            return "Book{" +
+                    "category='" + category + '\'' +
+                    ", author='" + author + '\'' +
+                    ", title='" + title + '\'' +
+                    ", price=" + price +
+                    '}';
+        }
+
     }
 
 }

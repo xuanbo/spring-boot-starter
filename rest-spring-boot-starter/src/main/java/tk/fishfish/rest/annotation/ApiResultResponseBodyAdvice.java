@@ -1,4 +1,4 @@
-package tk.fishfish.rest;
+package tk.fishfish.rest.annotation;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.MediaType;
@@ -10,6 +10,7 @@ import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import tk.fishfish.rest.model.ApiResult;
 
 /**
  * 返回body处理，包装成 {@link ApiResult} 。如果是 {@link ResponseEntity} 或 {@link ApiResultIgnore} 注解标识则不包装
@@ -35,11 +36,10 @@ public class ApiResultResponseBodyAdvice implements ResponseBodyAdvice<Object> {
             return body;
         }
         // @since 1.5.0
-        // 防止 java.lang.ClassCastException: tk.fishfish.rest.ApiResult cannot be cast to java.lang.String
+        // 防止 java.lang.ClassCastException: tk.fishfish.rest.model.ApiResult cannot be cast to java.lang.String
         if (aClass.isAssignableFrom(StringHttpMessageConverter.class)) {
             return body;
         }
-        // todo 基本数据类型是否特殊处理
         // 其余统一包装成ApiResult
         return ApiResult.ok(body);
     }

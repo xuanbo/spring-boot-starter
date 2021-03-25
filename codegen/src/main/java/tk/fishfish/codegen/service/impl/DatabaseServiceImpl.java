@@ -10,7 +10,7 @@ import tk.fishfish.codegen.dto.Table;
 import tk.fishfish.codegen.entity.Database;
 import tk.fishfish.codegen.service.DatabaseService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.fishfish.rest.BizException;
+import tk.fishfish.rest.execption.BizException;
 
 import javax.sql.DataSource;
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package tk.fishfish.json;
+package tk.fishfish.json.core;
 
 /**
  * json extractor

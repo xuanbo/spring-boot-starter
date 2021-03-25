@@ -1,4 +1,4 @@
-package tk.fishfish.rest;
+package tk.fishfish.rest.execption;
 
 import lombok.Getter;
 

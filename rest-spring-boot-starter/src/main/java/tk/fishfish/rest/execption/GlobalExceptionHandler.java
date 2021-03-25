@@ -1,4 +1,4 @@
-package tk.fishfish.rest;
+package tk.fishfish.rest.execption;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tk.fishfish.rest.model.ApiResult;
 
 import java.util.HashMap;
 import java.util.List;

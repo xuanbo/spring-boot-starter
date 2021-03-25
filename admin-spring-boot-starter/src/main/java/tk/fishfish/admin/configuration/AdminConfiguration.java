@@ -1,6 +1,5 @@
 package tk.fishfish.admin.configuration;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -29,13 +28,12 @@ class AdminConfiguration {
     /**
      * 自定义AccessTokenConverter，让程序在单体、微服务情况下都能获取额外的信息
      *
-     * @param objectMapper ObjectMapper
      * @return CustomAccessTokenConverter
      */
     @Bean
-    public AccessTokenConverter customAccessTokenConverter(ObjectMapper objectMapper) {
+    public AccessTokenConverter customAccessTokenConverter() {
         CustomAccessTokenConverter accessTokenConverter = new CustomAccessTokenConverter();
-        accessTokenConverter.setUserTokenConverter(new CustomUserAuthenticationConverter(objectMapper));
+        accessTokenConverter.setUserTokenConverter(new CustomUserAuthenticationConverter());
         return accessTokenConverter;
     }
 

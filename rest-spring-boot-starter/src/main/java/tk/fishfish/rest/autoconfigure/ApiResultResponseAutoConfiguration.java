@@ -2,7 +2,7 @@ package tk.fishfish.rest.autoconfigure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tk.fishfish.rest.ApiResultResponseBodyAdvice;
+import tk.fishfish.rest.annotation.ApiResultResponseBodyAdvice;
 
 /**
  * 统一返回值包装

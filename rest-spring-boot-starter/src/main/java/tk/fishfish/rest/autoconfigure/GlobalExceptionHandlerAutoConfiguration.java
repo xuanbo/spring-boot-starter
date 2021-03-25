@@ -2,7 +2,7 @@ package tk.fishfish.rest.autoconfigure;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import tk.fishfish.rest.GlobalExceptionHandler;
+import tk.fishfish.rest.execption.GlobalExceptionHandler;
 
 /**
  * 全局异常处理配置

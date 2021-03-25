@@ -34,6 +34,11 @@
             <artifactId>redis-spring-boot-starter</artifactId>
             <version>${project.version}</version>
         </dependency>
+        <dependency>
+            <groupId>tk.fishfish</groupId>
+            <artifactId>json-spring-boot-starter</artifactId>
+            <version>${project.version}</version>
+        </dependency>
 
         <dependency>
             <groupId>org.hibernate.validator</groupId>
@@ -54,6 +59,11 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

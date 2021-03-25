@@ -1,14 +1,12 @@
 package tk.fishfish.admin.security.token;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
 import tk.fishfish.admin.entity.User;
 import tk.fishfish.admin.security.DefaultUserDetails;
-import tk.fishfish.rest.BizException;
+import tk.fishfish.json.util.JSON;
 
 import java.util.Map;
 
@@ -22,8 +20,6 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class CustomUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 
-    private final ObjectMapper objectMapper;
-
     @Override
     @SuppressWarnings("unchecked")
     public Authentication extractAuthentication(Map<String, ?> map) {
@@ -34,34 +30,13 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
         }
         // 下面让资源服务远程访问认证服务时，也能让Principal为DefaultUserDetails对象
         if (extra instanceof Map) {
-            User user = readToUser(writeToJson(((Map<?, ?>) extra).get("user")));
+            String json = JSON.write(((Map<?, ?>) extra).get("user"));
+            User user = JSON.read(json, User.class);
             user.setPassword("N/A");
             DefaultUserDetails principal = DefaultUserDetails.of(user, (Map<String, Object>) extra);
             return new UsernamePasswordAuthenticationToken(principal, "N/A", authentication.getAuthorities());
         }
         return authentication;
-    }
-
-    private User readToUser(String json) {
-        try {
-            return objectMapper.readValue(json, User.class);
-        } catch (JsonProcessingException e) {
-            throw BizException.of(500, "读取json错误", e);
-        }
-    }
-
-    private <T> String writeToJson(T obj) {
-        if (obj == null) {
-            return null;
-        }
-        if (obj instanceof String) {
-            return (String) obj;
-        }
-        try {
-            return objectMapper.writeValueAsString(obj);
-        } catch (JsonProcessingException e) {
-            throw BizException.of(500, "写入json错误", e);
-        }
     }
 
 }
