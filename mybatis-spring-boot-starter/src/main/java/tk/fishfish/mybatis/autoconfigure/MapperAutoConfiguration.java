@@ -1,3 +1,4 @@
+
 package tk.fishfish.mybatis.autoconfigure;
 
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;

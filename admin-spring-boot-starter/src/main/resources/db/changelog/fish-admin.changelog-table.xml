@@ -114,4 +114,24 @@
         </insert>
     </changeSet>
 
+    <changeSet author="wxb" id="20210326-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_audit"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_audit" remarks="审计">
+            <column name="id" type="VARCHAR(50)" remarks="主键">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="VARCHAR(50)" remarks="账号"/>
+            <column name="type" type="VARCHAR(1)" remarks="类型"/>
+            <column name="status" type="VARCHAR(1)" remarks="状态"/>
+            <column name="ip" type="VARCHAR(15)" remarks="IP地址"/>
+            <column name="user_agent" type="VARCHAR(255)" remarks="浏览器user-agent"/>
+            <column name="message" type="VARCHAR(500)" remarks="描述"/>
+            <column name="created_at" type="datetime(3)" remarks="创建时间"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

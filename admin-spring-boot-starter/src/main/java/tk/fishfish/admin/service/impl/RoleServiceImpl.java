@@ -2,6 +2,7 @@ package tk.fishfish.admin.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tk.fishfish.admin.entity.Role;
 import tk.fishfish.admin.entity.UserRole;
 import tk.fishfish.admin.repository.UserRoleRepository;
@@ -26,6 +27,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     private final UserRoleRepository userRoleRepository;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
         Condition condition = new Condition(UserRole.class);
         condition.createCriteria().andEqualTo("userId", id);
@@ -34,6 +36,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteByIds(List<String> ids) {
         Condition condition = new Condition(UserRole.class);
         condition.createCriteria().andIn("userId", ids);

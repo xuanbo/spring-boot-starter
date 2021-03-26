@@ -17,6 +17,20 @@ public class Sort implements Serializable {
 
     private Order order;
 
+    public static Sort asc(String name) {
+        Sort sort = new Sort();
+        sort.setName(name);
+        sort.setOrder(Order.DESC);
+        return sort;
+    }
+
+    public static Sort desc(String name) {
+        Sort sort = new Sort();
+        sort.setName(name);
+        sort.setOrder(Order.DESC);
+        return sort;
+    }
+
     public enum Order {
 
         ASC,

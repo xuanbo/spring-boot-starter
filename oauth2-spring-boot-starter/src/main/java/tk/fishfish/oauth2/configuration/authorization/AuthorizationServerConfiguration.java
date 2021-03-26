@@ -4,12 +4,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Import;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.config.annotation.configurers.ClientDetailsServiceConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.AuthorizationServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableAuthorizationServer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerEndpointsConfigurer;
 import org.springframework.security.oauth2.config.annotation.web.configurers.AuthorizationServerSecurityConfigurer;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import tk.fishfish.oauth2.configuration.token.TokenConverterConfiguration;
@@ -30,6 +33,9 @@ import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
 })
 public class AuthorizationServerConfiguration extends AuthorizationServerConfigurerAdapter {
 
+    @Autowired
+    private UserDetailsService userDetailsService;
+
     /**
      * 这里自定义ClientDetailsServiceProvider接口继承ClientDetailsService，防止注入JDK代理Bean，导致认证时stackoverflow
      */
@@ -44,6 +50,12 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
 
     @Autowired
     private TokenStore tokenStore;
+
+    @Autowired
+    private ApprovalStore approvalStore;
+
+    @Autowired
+    private AuthorizationCodeServices authorizationCodeServices;
 
     @Autowired
     private AccessTokenConverter accessTokenConverter;
@@ -68,7 +80,11 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Override
     public void configure(AuthorizationServerEndpointsConfigurer endpoints) {
         endpoints.authenticationManager(authenticationManager)
+                // refresh_token必须，否则会错误: UserDetailsService is required.
+                .userDetailsService(userDetailsService)
                 .tokenStore(tokenStore)
+                .approvalStore(approvalStore)
+                .authorizationCodeServices(authorizationCodeServices)
                 .accessTokenConverter(accessTokenConverter);
     }
 

@@ -13,6 +13,7 @@ import tk.fishfish.codegen.service.DatabaseService;
 import tk.fishfish.mybatis.controller.BaseController;
 import tk.fishfish.mybatis.domain.Page;
 import tk.fishfish.mybatis.domain.Query;
+import tk.fishfish.rest.model.ApiResult;
 
 import java.util.List;
 
@@ -35,12 +36,12 @@ public class DatabaseController extends BaseController<Database> {
     }
 
     @PostMapping("/list")
-    public List<Database> page(@RequestBody DatabaseCondition condition) {
+    public List<Database> list(@RequestBody DatabaseCondition condition) {
         return databaseService.query(condition);
     }
 
     @PostMapping("/ping")
-    public String ping(@RequestBody Database database) {
+    public ApiResult<Void> ping(@RequestBody Database database) {
         return databaseService.ping(database);
     }
 

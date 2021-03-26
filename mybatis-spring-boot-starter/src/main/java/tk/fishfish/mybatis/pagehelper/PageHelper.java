@@ -34,6 +34,10 @@ public final class PageHelper {
         com.github.pagehelper.PageHelper.startPage(page);
     }
 
+    public static void clearPage() {
+        com.github.pagehelper.PageHelper.clearPage();
+    }
+
     public static IPage convert(Pageable pageable) {
         return new PageImpl(pageable.getPage(), pageable.getSize(), orderBy(pageable.getSorts()));
     }

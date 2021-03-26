@@ -1,9 +1,12 @@
 package tk.fishfish.admin.configuration;
 
+import org.apache.ibatis.annotations.Mapper;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
@@ -12,15 +15,18 @@ import tk.fishfish.admin.security.token.CustomAccessTokenConverter;
 import tk.fishfish.admin.security.token.CustomUserAuthenticationConverter;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
 
+import java.util.Collections;
+
 /**
  * 后台管理配置
  *
  * @author 奔波儿灞
  * @version 1.5.0
  */
-@MapperScan(AdminConfiguration.PACKAGE)
+@EnableAsync
 @ComponentScan(AdminConfiguration.PACKAGE)
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@MapperScan(basePackages = AdminConfiguration.PACKAGE, annotationClass = Mapper.class)
 class AdminConfiguration {
 
     public static final String PACKAGE = "tk.fishfish.admin";
@@ -45,8 +51,10 @@ class AdminConfiguration {
     @Bean
     public ClientDetailsServiceProvider clientDetailsServiceProvider(PasswordEncoder passwordEncoder) {
         return clientId -> {
-            BaseClientDetails details = new BaseClientDetails(clientId, "fish", "read,write", "password,refresh_token,authorization_code", "");
+            BaseClientDetails details = new BaseClientDetails(clientId, "fish", "read,write", "password,refresh_token,authorization_code,implicit,client_credentials", "");
             details.setClientSecret(passwordEncoder.encode("secret"));
+            details.setRegisteredRedirectUri(Collections.singleton("http://localhost:8080"));
+            details.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_CLIENT")));
             return details;
         };
     }

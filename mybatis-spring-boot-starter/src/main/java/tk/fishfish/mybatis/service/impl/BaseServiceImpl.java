@@ -58,8 +58,12 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
             pageable = new PageRequest();
         }
         PageHelper.startPage(pageable, entityClazz);
-        PageInfo<T> info = PageInfo.of(queryFunc.get());
-        return PageHelper.convert(info);
+        try {
+            PageInfo<T> info = PageInfo.of(queryFunc.get());
+            return PageHelper.convert(info);
+        } finally {
+            PageHelper.clearPage();
+        }
     }
 
     @Override

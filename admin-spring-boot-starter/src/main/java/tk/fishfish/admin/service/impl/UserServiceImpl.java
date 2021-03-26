@@ -6,14 +6,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import tk.fishfish.admin.entity.Role;
 import tk.fishfish.admin.entity.User;
 import tk.fishfish.admin.entity.UserRole;
+import tk.fishfish.admin.repository.RoleRepository;
 import tk.fishfish.admin.repository.UserRepository;
 import tk.fishfish.admin.repository.UserRoleRepository;
 import tk.fishfish.admin.security.DefaultUserDetails;
 import tk.fishfish.admin.security.UserContextHolder;
 import tk.fishfish.admin.service.UserService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
+import tk.fishfish.rest.execption.BizException;
 import tk.mybatis.mapper.entity.Condition;
 
 import java.util.Date;
@@ -34,10 +38,12 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
+    private final RoleRepository roleRepository;
 
     private final PasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
         Condition condition = new Condition(UserRole.class);
         condition.createCriteria().andEqualTo("userId", id);
@@ -46,6 +52,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void deleteByIds(List<String> ids) {
         Condition condition = new Condition(UserRole.class);
         condition.createCriteria().andIn("userId", ids);
@@ -55,11 +62,26 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = Optional.ofNullable(userRepository.loadByUsername(username))
+        User user = Optional.ofNullable(userRepository.findByUsername(username))
                 .orElseThrow(() -> new UsernameNotFoundException("账号不存在: " + username));
-        Map<String, Object> extra = new HashMap<>();
+        List<Role> roles = roleRepository.findByUserId(user.getId());
+        Map<String, Object> extra = new HashMap<>(4);
         extra.put("user", user);
-        return DefaultUserDetails.of(user, extra);
+        extra.put("roles", roles);
+        return DefaultUserDetails.of(user, roles, extra);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void changePassword(String username, String oldPassword, String newPassword) {
+        User user = Optional.ofNullable(userRepository.findByUsername(username))
+                .orElseThrow(() -> BizException.of(404, "账号不存在: %s", username));
+        boolean matches = passwordEncoder.matches(oldPassword, user.getPassword());
+        if (!matches) {
+            throw BizException.of(400, "旧密码验证不通过");
+        }
+        String password = passwordEncoder.encode(newPassword);
+        userRepository.updatePassword(username, password);
     }
 
     @Override

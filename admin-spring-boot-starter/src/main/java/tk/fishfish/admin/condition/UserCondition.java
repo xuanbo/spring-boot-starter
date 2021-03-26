@@ -14,19 +14,19 @@ import tk.fishfish.mybatis.condition.annotation.Like;
 @Data
 public class UserCondition {
 
-    @Like(property = "username", policy = Like.Policy.ALL)
+    @Like(policy = Like.Policy.ALL)
     private String username;
 
-    @Like(property = "name", policy = Like.Policy.ALL)
+    @Like(policy = Like.Policy.ALL)
     private String name;
 
-    @Eq(property = "sex")
+    @Eq
     private Sex sex;
 
-    @Like(property = "email", policy = Like.Policy.ALL)
+    @Like(policy = Like.Policy.ALL)
     private String email;
 
-    @Like(property = "phone", policy = Like.Policy.ALL)
+    @Like(policy = Like.Policy.ALL)
     private String phone;
 
 }

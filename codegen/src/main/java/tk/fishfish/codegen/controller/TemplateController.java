@@ -44,7 +44,7 @@ public class TemplateController {
     public void gen(@Validated @RequestBody TemplateCondition condition, HttpServletResponse resp) {
         String name = new String("模板代码.zip".getBytes(StandardCharsets.UTF_8), StandardCharsets.ISO_8859_1);
         resp.setCharacterEncoding(StandardCharsets.UTF_8.name());
-        resp.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename*=utf-8''" + name + ".csv");
+        resp.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment;filename*=utf-8''" + name + ".zip");
         try {
             templateService.gen(condition, resp.getOutputStream());
         } catch (Exception e) {

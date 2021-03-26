@@ -4,6 +4,7 @@ import tk.fishfish.codegen.condition.DatabaseCondition;
 import tk.fishfish.codegen.dto.Table;
 import tk.fishfish.codegen.entity.Database;
 import tk.fishfish.mybatis.service.BaseService;
+import tk.fishfish.rest.model.ApiResult;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface DatabaseService extends BaseService<Database> {
      * @param database 数据库
      * @return 连接异常信息
      */
-    String ping(Database database);
+    ApiResult<Void> ping(Database database);
 
     /**
      * 查询表

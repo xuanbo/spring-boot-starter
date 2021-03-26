@@ -12,10 +12,10 @@ import tk.fishfish.mybatis.condition.annotation.Like;
 @Data
 public class RoleCondition {
 
-    @Like(property = "code", policy = Like.Policy.ALL)
+    @Like(policy = Like.Policy.ALL)
     private String code;
 
-    @Like(property = "name", policy = Like.Policy.ALL)
+    @Like(policy = Like.Policy.ALL)
     private String name;
 
 }

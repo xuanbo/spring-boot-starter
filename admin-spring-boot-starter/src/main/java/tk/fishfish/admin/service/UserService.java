@@ -7,4 +7,7 @@ package tk.fishfish.admin.service;
  * @version 1.5.0
  */
 public interface UserService {
+
+    void changePassword(String username, String oldPassword, String newPassword);
+
 }

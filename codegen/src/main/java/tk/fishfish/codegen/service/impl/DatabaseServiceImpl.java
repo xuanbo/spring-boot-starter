@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.support.JdbcUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 import tk.fishfish.codegen.condition.DatabaseCondition;
 import tk.fishfish.codegen.config.datasource.DataSourceHub;
 import tk.fishfish.codegen.dto.Table;
@@ -11,6 +12,7 @@ import tk.fishfish.codegen.entity.Database;
 import tk.fishfish.codegen.service.DatabaseService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
 import tk.fishfish.rest.execption.BizException;
+import tk.fishfish.rest.model.ApiResult;
 
 import javax.sql.DataSource;
 import java.sql.Connection;
@@ -58,12 +60,12 @@ public class DatabaseServiceImpl extends BaseServiceImpl<Database> implements Da
     }
 
     @Override
-    public String ping(Database database) {
+    public ApiResult<Void> ping(Database database) {
         DataSource dataSource = dataSourceHub.createDataSource(database);
         try (Connection con = dataSource.getConnection()) {
-            return null;
+            return ApiResult.ok(null);
         } catch (SQLException e) {
-            return e.getMessage();
+            return ApiResult.fail(400, e.getMessage());
         }
     }
 
@@ -77,7 +79,7 @@ public class DatabaseServiceImpl extends BaseServiceImpl<Database> implements Da
         try {
             con = dataSource.getConnection();
             DatabaseMetaData databaseMetaData = con.getMetaData();
-            rs = databaseMetaData.getTables(condition.getCatalog(), condition.getSchema(), "%", new String[]{"TABLE"});
+            rs = databaseMetaData.getTables(getCatalog(con, condition), getSchema(con, condition), "%", new String[]{"TABLE"});
             while (rs.next()) {
                 tables.add(
                         Table.builder()
@@ -107,7 +109,7 @@ public class DatabaseServiceImpl extends BaseServiceImpl<Database> implements Da
         try {
             con = dataSource.getConnection();
             DatabaseMetaData databaseMetaData = con.getMetaData();
-            rs = databaseMetaData.getColumns(condition.getCatalog(), condition.getSchema(), condition.getName(), "%");
+            rs = databaseMetaData.getColumns(getCatalog(con, condition), getSchema(con, condition), condition.getName(), "%");
             while (rs.next()) {
                 columns.add(
                         Table.Column.builder()
@@ -129,6 +131,20 @@ public class DatabaseServiceImpl extends BaseServiceImpl<Database> implements Da
                 .name(condition.getName())
                 .columns(columns)
                 .build();
+    }
+
+    private String getCatalog(Connection con, DatabaseCondition.TableQuery condition) throws SQLException {
+        if (StringUtils.isEmpty(condition.getCatalog())) {
+            return con.getCatalog();
+        }
+        return condition.getCatalog();
+    }
+
+    private String getSchema(Connection con, DatabaseCondition.TableQuery condition) throws SQLException {
+        if (StringUtils.isEmpty(condition.getSchema())) {
+            return con.getSchema();
+        }
+        return condition.getSchema();
     }
 
 }

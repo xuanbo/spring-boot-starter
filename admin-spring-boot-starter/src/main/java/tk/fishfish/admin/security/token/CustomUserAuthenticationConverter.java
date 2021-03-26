@@ -4,10 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.provider.token.DefaultUserAuthenticationConverter;
+import tk.fishfish.admin.entity.Role;
 import tk.fishfish.admin.entity.User;
 import tk.fishfish.admin.security.DefaultUserDetails;
 import tk.fishfish.json.util.JSON;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,10 +32,14 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
         }
         // 下面让资源服务远程访问认证服务时，也能让Principal为DefaultUserDetails对象
         if (extra instanceof Map) {
+            // 用户
             String json = JSON.write(((Map<?, ?>) extra).get("user"));
             User user = JSON.read(json, User.class);
             user.setPassword("N/A");
-            DefaultUserDetails principal = DefaultUserDetails.of(user, (Map<String, Object>) extra);
+            // 角色
+            json = JSON.write(((Map<?, ?>) extra).get("roles"));
+            List<Role> roles = JSON.readList(json, Role.class);
+            DefaultUserDetails principal = DefaultUserDetails.of(user, roles, (Map<String, Object>) extra);
             return new UsernamePasswordAuthenticationToken(principal, "N/A", authentication.getAuthorities());
         }
         return authentication;

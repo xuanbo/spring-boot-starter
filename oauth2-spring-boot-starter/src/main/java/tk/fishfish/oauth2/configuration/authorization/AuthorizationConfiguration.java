@@ -9,7 +9,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.approval.ApprovalStore;
+import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
+import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
+import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -81,6 +85,18 @@ public class AuthorizationConfiguration {
         tokenStore.setPrefix(properties.getTokenPrefix());
         tokenStore.setSerializationStrategy(strategy);
         return tokenStore;
+    }
+
+    @Bean
+    public ApprovalStore approvalStore(TokenStore tokenStore) {
+        TokenApprovalStore approvalStore = new TokenApprovalStore();
+        approvalStore.setTokenStore(tokenStore);
+        return approvalStore;
+    }
+
+    @Bean
+    public AuthorizationCodeServices authorizationCodeServices() {
+        return new InMemoryAuthorizationCodeServices();
     }
 
     @Bean

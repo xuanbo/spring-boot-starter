@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Import;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
@@ -20,6 +21,7 @@ import java.util.Optional;
  * @version 1.5.0
  */
 @Slf4j
+@Order(6)
 @EnableResourceServer
 @EnableConfigurationProperties(ResourceProperties.class)
 @Import({
@@ -27,6 +29,12 @@ import java.util.Optional;
         ResourceConfiguration.class
 })
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
+
+    private final String[] ignorePatterns = new String[]{
+            "/login", "/logout", "/actuator/**",
+            "/favicon.ico", "/",
+            "/v0/**"
+    };
 
     @Autowired
     private ResourceServerTokenServices tokenServices;
@@ -39,7 +47,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         String[] ignorePatterns = Optional.ofNullable(properties.getIgnorePatterns())
                 .orElse(new String[]{});
         http.authorizeRequests()
-                .antMatchers("/oauth", "/v0/**").permitAll()
+                .antMatchers(this.ignorePatterns).permitAll()
                 .antMatchers(ignorePatterns).permitAll()
                 .anyRequest().authenticated();
     }

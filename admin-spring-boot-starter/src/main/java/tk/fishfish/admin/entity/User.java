@@ -10,10 +10,8 @@ import tk.fishfish.admin.validator.Group;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
-import java.util.List;
 
 /**
  * 用户
@@ -55,8 +53,5 @@ public class User extends BaseEntity {
     private Date credentialsExpireAt;
 
     private Boolean enable;
-
-    @Transient
-    private List<Role> roles;
 
 }

@@ -23,8 +23,6 @@ mybatis:
     params: count=countSql
   # 通用mapper
   mapper:
-    mappers:
-      - tk.fishfish.mybatis.repository.Repository
     not-empty: true
     safe-delete: true
 

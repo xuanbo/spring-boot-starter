@@ -10,7 +10,6 @@ import tk.fishfish.admin.entity.Role;
 import tk.fishfish.admin.entity.User;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -41,7 +40,7 @@ public class DefaultUserDetails extends org.springframework.security.core.userde
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public static DefaultUserDetails of(User user, Map<String, Object> extra) {
+    public static DefaultUserDetails of(User user, List<Role> roles, Map<String, Object> extra) {
         boolean enable = Optional.ofNullable(user.getEnable())
                 .orElse(true);
         boolean accountNonExpired = false;
@@ -57,14 +56,12 @@ public class DefaultUserDetails extends org.springframework.security.core.userde
         boolean accountLock = Optional.ofNullable(user.getAccountLock())
                 .orElse(false);
         // 权限
-        List<SimpleGrantedAuthority> authorities = Optional.ofNullable(user.getRoles())
-                .map(roles -> roles.stream()
-                        .map(Role::getCode)
-                        // 增加ROLE_前缀
-                        .map(e -> "ROLE_" + e)
-                        .map(SimpleGrantedAuthority::new)
-                        .collect(Collectors.toList())
-                ).orElse(Collections.emptyList());
+        List<SimpleGrantedAuthority> authorities = roles.stream()
+                .map(Role::getCode)
+                // 增加ROLE_前缀
+                .map(e -> "ROLE_" + e)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
         DefaultUserDetails details = new DefaultUserDetails(user.getUsername(), user.getPassword(), enable, accountNonExpired, credentialsNonExpired, !accountLock, authorities);
         // 用户信息
         details.setId(user.getId());

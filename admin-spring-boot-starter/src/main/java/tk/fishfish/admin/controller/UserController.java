@@ -1,17 +1,21 @@
 package tk.fishfish.admin.controller;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tk.fishfish.admin.condition.UserCondition;
+import tk.fishfish.admin.dto.PasswordDTO;
 import tk.fishfish.admin.entity.User;
 import tk.fishfish.admin.security.DefaultUserDetails;
 import tk.fishfish.admin.security.UserContextHolder;
+import tk.fishfish.admin.service.UserService;
 import tk.fishfish.admin.validator.Group;
 import tk.fishfish.mybatis.controller.BaseController;
 import tk.fishfish.mybatis.domain.Page;
@@ -26,8 +30,11 @@ import java.util.List;
  * @version 1.5.0
  */
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/v1/user")
 public class UserController extends BaseController<User> {
+
+    private final UserService userService;
 
     @Override
     @PreAuthorize("hasRole('ADMIN')")
@@ -68,6 +75,12 @@ public class UserController extends BaseController<User> {
     @GetMapping("/principal")
     public DefaultUserDetails principal() {
         return UserContextHolder.current();
+    }
+
+    @PutMapping("/password")
+    public void changePassword(@Validated @RequestBody PasswordDTO dto) {
+        String username = UserContextHolder.username();
+        userService.changePassword(username, dto.getOldPassword(), dto.getNewPassword());
     }
 
 }
