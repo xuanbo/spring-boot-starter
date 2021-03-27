@@ -46,9 +46,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         // 只处理oauth，登录相关，其他资源安全交给资源服务器
         http.requestMatchers().antMatchers("/oauth/**", "/login/**", "/logout/**")
                 .and().authorizeRequests().antMatchers("/oauth/**").authenticated()
-                .and().formLogin().permitAll()
-                .and().logout().permitAll()
-                .and().csrf().disable();
+                .and().formLogin().loginPage("/login").loginProcessingUrl("/login").permitAll()
+                .and().logout().permitAll();
     }
 
 }

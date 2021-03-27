@@ -4,7 +4,7 @@
 
 ## 功能
 
-- 认证（OAuth2）
+- 认证（OAuth2），自定义登录、授权界面
 - 用户
 - 角色
 - 审计
@@ -153,9 +153,13 @@ grant_type=client_credentials&client_id=client&client_secret=secret
 
     此时，跳转到登录界面
 
-    ![authorize_code](docs/authorize_code_1.png)
+    ![登录界面](docs/login.png)
 
-    输入用户名密码后跳转到 code 获取地址：`http://localhost:8080/?code=eLX0VK`
+    输入用户名密码后跳转到授权界面
+
+    ![授权界面](docs/authorize_code_1.png)
+   
+    统一授权后跳转到 code 获取地址：`http://localhost:8080/?code=eLX0VK`
     
     ![authorize_code](docs/authorize_code_2.png)
 
