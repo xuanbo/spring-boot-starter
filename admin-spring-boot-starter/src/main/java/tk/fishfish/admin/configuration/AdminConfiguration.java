@@ -6,16 +6,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
 import tk.fishfish.admin.security.token.CustomAccessTokenConverter;
 import tk.fishfish.admin.security.token.CustomUserAuthenticationConverter;
-import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
-
-import java.util.Collections;
 
 /**
  * 后台管理配置
@@ -46,17 +41,6 @@ class AdminConfiguration {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public ClientDetailsServiceProvider clientDetailsServiceProvider(PasswordEncoder passwordEncoder) {
-        return clientId -> {
-            BaseClientDetails details = new BaseClientDetails(clientId, "fish", "read,write", "password,refresh_token,authorization_code,implicit,client_credentials", "");
-            details.setClientSecret(passwordEncoder.encode("secret"));
-            details.setRegisteredRedirectUri(Collections.singleton("http://localhost:8080"));
-            details.setAuthorities(Collections.singletonList(new SimpleGrantedAuthority("ROLE_CLIENT")));
-            return details;
-        };
     }
 
 }

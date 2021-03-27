@@ -8,6 +8,8 @@ import tk.fishfish.admin.entity.Audit;
 import tk.fishfish.admin.service.AuditService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
 
+import javax.annotation.Priority;
+
 /**
  * 审计
  *
@@ -16,6 +18,7 @@ import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
  */
 @Slf4j
 @Service
+@Priority(10)
 @RequiredArgsConstructor
 public class AuditServiceImpl extends BaseServiceImpl<Audit> implements AuditService {
 

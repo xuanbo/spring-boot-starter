@@ -11,6 +11,7 @@ import tk.fishfish.admin.service.RoleService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
 import tk.mybatis.mapper.entity.Condition;
 
+import javax.annotation.Priority;
 import java.util.Date;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import java.util.List;
  * @version 1.5.0
  */
 @Service
+@Priority(10)
 @RequiredArgsConstructor
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 

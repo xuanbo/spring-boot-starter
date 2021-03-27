@@ -20,6 +20,7 @@ import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
 import tk.fishfish.rest.execption.BizException;
 import tk.mybatis.mapper.entity.Condition;
 
+import javax.annotation.Priority;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +34,7 @@ import java.util.Optional;
  * @version 1.5.0
  */
 @Service
+@Priority(10)
 @RequiredArgsConstructor
 public class UserServiceImpl extends BaseServiceImpl<User> implements UserService, UserDetailsService {
 

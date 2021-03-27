@@ -6,6 +6,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 import tk.fishfish.mybatis.entity.Entity;
 
+import javax.persistence.Column;
 import java.util.Date;
 
 /**
@@ -18,10 +19,12 @@ import java.util.Date;
 @EqualsAndHashCode(callSuper = true)
 public class BaseEntity extends Entity {
 
+    @Column(name = "created_at", updatable = false)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
     private Date createdAt;
 
+    @Column(name = "created_by", updatable = false)
     private String createdBy;
 
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")

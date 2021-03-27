@@ -6,9 +6,9 @@ import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import tk.fishfish.rest.model.ApiResult;
 
@@ -29,7 +29,6 @@ public class GlobalExceptionHandler {
 
     private static final Logger LOG = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ApiResult<?> handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
         LOG.warn("handle MethodArgumentNotValidException", e);
@@ -46,6 +45,12 @@ public class GlobalExceptionHandler {
             return map;
         }).collect(Collectors.toList());
         return ApiResult.fail(400, "参数校验不合法", list);
+    }
+
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ApiResult<?> handleHttpMediaTypeNotSupportedException(HttpMediaTypeNotSupportedException e) {
+        LOG.warn("handle HttpMediaTypeNotSupportedException", e);
+        return ApiResult.fail(400, e.getMessage());
     }
 
     @ExceptionHandler(BizException.class)

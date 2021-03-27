@@ -93,7 +93,9 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void insert(T entity) {
-        entity.setId(generateId());
+        if (entity.getId() == null) {
+            entity.setId(generateId());
+        }
         beforeInsert(entity);
         repository.insert(entity);
         afterInsert(entity);

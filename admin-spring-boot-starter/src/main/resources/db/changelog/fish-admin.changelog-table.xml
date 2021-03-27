@@ -134,4 +134,57 @@
         </createTable>
     </changeSet>
 
+    <changeSet author="wxb" id="20210327-1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="sys_client"/>
+            </not>
+        </preConditions>
+        <createTable tableName="sys_client" remarks="客户端">
+            <column name="id" type="VARCHAR(50)" remarks="主键">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="VARCHAR(50)" remarks="应用名称"/>
+            <column name="description" type="VARCHAR(80)" remarks="描述"/>
+            <column name="logo" type="VARCHAR(255)" remarks="logo"/>
+            <column name="uri" type="VARCHAR(255)" remarks="应用地址"/>
+            <column name="secret" type="VARCHAR(100)" remarks="密钥"/>
+            <column name="resource_id" type="VARCHAR(100)" remarks="资源"/>
+            <column name="redirect_uri" type="VARCHAR(500)" remarks="重定向地址"/>
+            <column name="grant_type" type="VARCHAR(100)" remarks="授权类型"/>
+            <column name="scope" type="VARCHAR(500)" remarks="授权类型"/>
+            <column name="access_token_validity_seconds" type="INT(10)" remarks="token过期时间"/>
+            <column name="refresh_token_validity_seconds" type="INT(10)" remarks="refresh_token过期时间"/>
+            <column name="status" type="VARCHAR(1)" remarks="状态"/>
+            <column name="reason" type="VARCHAR(80)" remarks="理由"/>
+            <column name="expire_at" type="datetime(3)" remarks="过期时间"/>
+            <column name="created_at" type="datetime(3)" remarks="创建时间"/>
+            <column name="created_by" type="VARCHAR(50)" remarks="创建者"/>
+            <column name="updated_at" type="datetime(3)" remarks="修改时间"/>
+            <column name="updated_by" type="VARCHAR(50)" remarks="修改者"/>
+        </createTable>
+    </changeSet>
+
+    <changeSet author="wxb" id="20210327-2">
+        <preConditions onFail="MARK_RAN">
+            <sqlCheck expectedResult="0">
+                SELECT COUNT(*) FROM sys_client WHERE id = 'client'
+            </sqlCheck>
+        </preConditions>
+        <insert tableName="sys_client">
+            <column name="id" value="client"/>
+            <column name="name" value="后台管理"/>
+            <column name="description" value="后台管理应用"/>
+            <column name="uri" value="http://localhost:8080"/>
+            <column name="secret" value="$2a$10$/o3ai8k./cfzGqr.wl4jHO0nt4aKKl1.chBK6qUjiiycYQVuPMkVu"/>
+            <column name="resource_id" value="fish"/>
+            <column name="redirect_uri" value="http://localhost:8080"/>
+            <column name="grant_type" value="password,refresh_token,authorization_code,implicit,client_credentials"/>
+            <column name="scope" value="read,write"/>
+            <column name="status" value="1"/>
+            <column name="created_at" value="2021-03-27 13:38:00.000"/>
+            <column name="created_by" value="admin"/>
+        </insert>
+    </changeSet>
+
 </databaseChangeLog>

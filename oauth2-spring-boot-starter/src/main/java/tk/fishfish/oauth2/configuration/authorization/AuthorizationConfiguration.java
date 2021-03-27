@@ -13,7 +13,6 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.code.InMemoryAuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
 import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
@@ -21,6 +20,7 @@ import org.springframework.security.oauth2.provider.token.store.redis.RedisToken
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStoreSerializationStrategy;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
 import tk.fishfish.oauth2.token.JdkSerializationStrategy;
+import tk.fishfish.oauth2.token.RedisAuthorizationCodeServices;
 
 import java.util.Collections;
 
@@ -95,8 +95,13 @@ public class AuthorizationConfiguration {
     }
 
     @Bean
-    public AuthorizationCodeServices authorizationCodeServices() {
-        return new InMemoryAuthorizationCodeServices();
+    public AuthorizationCodeServices authorizationCodeServices(
+            RedisConnectionFactory redisConnectionFactory,
+            AuthorizationProperties properties
+    ) {
+        RedisAuthorizationCodeServices authorizationCodeServices = new RedisAuthorizationCodeServices(redisConnectionFactory);
+        authorizationCodeServices.setPrefix(properties.getTokenPrefix());
+        return authorizationCodeServices;
     }
 
     @Bean
