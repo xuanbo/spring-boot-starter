@@ -12,9 +12,4 @@ import tk.fishfish.mybatis.repository.Repository;
  */
 @Mapper
 public interface ClientRepository extends Repository<Client> {
-
-    default Client findById(String id) {
-        return selectByPrimaryKey(id);
-    }
-
 }

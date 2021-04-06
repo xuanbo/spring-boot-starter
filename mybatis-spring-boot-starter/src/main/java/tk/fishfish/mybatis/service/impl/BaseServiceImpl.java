@@ -80,6 +80,13 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     }
 
     @Override
+    public T single(String property, Object value) {
+        Condition condition = new Condition(entityClazz);
+        condition.createCriteria().andEqualTo(property, value);
+        return repository.selectOneByExample(condition);
+    }
+
+    @Override
     public long count(Object condition) {
         Condition cond = conditionParser.parse(entityClazz, condition);
         return repository.selectCountByExample(cond);
@@ -160,7 +167,9 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void deleteById(String id) {
+        beforeDelete(id);
         repository.deleteByPrimaryKey(id);
+        afterDelete(id);
     }
 
     @Override
@@ -168,14 +177,18 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
     public void deleteByIds(List<String> ids) {
         Condition condition = new Condition(entityClazz);
         condition.createCriteria().andIn("id", ids);
+        beforeDelete(ids);
         repository.deleteByExample(condition);
+        afterDelete(ids);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void delete(Object condition) {
         Condition cond = conditionParser.parse(entityClazz, condition);
+        beforeDelete(cond);
         repository.deleteByExample(cond);
+        afterDelete(cond);
     }
 
     /**
@@ -217,6 +230,54 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
      * @param entity 实体
      */
     protected void afterUpdate(T entity) {
+    }
+
+    /**
+     * Delete前调用
+     *
+     * @param id 主键
+     */
+    protected void beforeDelete(String id) {
+    }
+
+    /**
+     * Delete后调用
+     *
+     * @param id 主键
+     */
+    protected void afterDelete(String id) {
+    }
+
+    /**
+     * Delete前调用
+     *
+     * @param ids 主键
+     */
+    protected void beforeDelete(List<String> ids) {
+    }
+
+    /**
+     * Delete后调用
+     *
+     * @param ids 主键
+     */
+    protected void afterDelete(List<String> ids) {
+    }
+
+    /**
+     * Delete前调用
+     *
+     * @param condition 条件
+     */
+    protected void beforeDelete(Condition condition) {
+    }
+
+    /**
+     * Delete后调用
+     *
+     * @param condition 条件
+     */
+    protected void afterDelete(Condition condition) {
     }
 
 }

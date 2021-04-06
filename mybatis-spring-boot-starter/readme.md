@@ -207,7 +207,8 @@ public class UserController extends BaseController<User> {
 
 ### 1.5.0-SNAPSHOT
 
-迁移到 github 包管理
+- 新增、修改、删除勾子
+- （指定主键）批量新增（ MySQL、H2 ）
 
 ### 1.3.0-SNAPSHOT
 

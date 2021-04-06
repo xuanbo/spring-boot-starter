@@ -6,9 +6,9 @@ import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientRegistrationException;
 import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.stereotype.Service;
+import tk.fishfish.admin.cache.ClientCache;
 import tk.fishfish.admin.entity.Client;
 import tk.fishfish.admin.entity.enums.ClientStatus;
-import tk.fishfish.admin.repository.ClientRepository;
 import tk.fishfish.admin.security.DefaultClientDetails;
 import tk.fishfish.admin.security.UserContextHolder;
 import tk.fishfish.admin.security.exception.ClientExpiredException;
@@ -16,9 +16,11 @@ import tk.fishfish.admin.security.exception.ClientStatusException;
 import tk.fishfish.admin.service.ClientService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
+import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Priority;
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -32,13 +34,13 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ClientServiceImpl extends BaseServiceImpl<Client> implements ClientService, ClientDetailsServiceProvider {
 
-    private final ClientRepository clientRepository;
-
     private final PasswordEncoder passwordEncoder;
+
+    private final ClientCache clientCache;
 
     @Override
     public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-        Client client = Optional.ofNullable(clientRepository.findById(clientId))
+        Client client = Optional.ofNullable(clientCache.id(clientId))
                 .orElseThrow(() -> new NoSuchClientException("客户端不存在: " + clientId));
         if (client.getStatus() != ClientStatus.PASS) {
             throw new ClientStatusException("客户端未通过审核: " + clientId);
@@ -65,6 +67,21 @@ public class ClientServiceImpl extends BaseServiceImpl<Client> implements Client
     protected void beforeUpdate(Client client) {
         client.setUpdatedAt(new Date());
         client.setUpdatedBy(UserContextHolder.username());
+    }
+
+    @Override
+    protected void afterDelete(String id) {
+        clientCache.evictById(id);
+    }
+
+    @Override
+    protected void afterDelete(List<String> ids) {
+        clientCache.evictByIds(ids);
+    }
+
+    @Override
+    protected void afterDelete(Condition condition) {
+        clientCache.evict();
     }
 
 }

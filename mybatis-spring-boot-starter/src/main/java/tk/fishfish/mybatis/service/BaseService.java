@@ -50,6 +50,15 @@ public interface BaseService<T extends Entity> {
     T single(Object condition);
 
     /**
+     * 单字段查询
+     *
+     * @param property 实体属性，会自动转为表字段
+     * @param value    值
+     * @return 数据
+     */
+    T single(String property, Object value);
+
+    /**
      * 条件查询
      *
      * @param condition 条件

@@ -1,4 +1,4 @@
-package tk.fishfish.admin.util;
+package tk.fishfish.admin.util.http;
 
 import lombok.extern.slf4j.Slf4j;
 

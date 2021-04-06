@@ -12,5 +12,6 @@ import tk.mybatis.mapper.common.Mapper;
  */
 @RegisterMapper
 public interface Repository<T extends Entity> extends Mapper<T> {
+
 }
 

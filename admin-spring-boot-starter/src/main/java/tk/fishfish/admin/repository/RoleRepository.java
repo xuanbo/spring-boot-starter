@@ -24,4 +24,7 @@ public interface RoleRepository extends Repository<Role> {
     })
     List<Role> findByUserId(@Param("userId") String userId);
 
+    @Select("SELECT * FROM sys_role WHERE code = #{code}")
+    Role findByCode(@Param("code") String code);
+
 }

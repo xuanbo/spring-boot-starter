@@ -12,7 +12,7 @@ import tk.fishfish.admin.entity.Audit;
 import tk.fishfish.admin.entity.enums.AuditStatus;
 import tk.fishfish.admin.entity.enums.AuditType;
 import tk.fishfish.admin.service.AuditService;
-import tk.fishfish.admin.util.RequestUtils;
+import tk.fishfish.admin.util.http.RequestUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Date;

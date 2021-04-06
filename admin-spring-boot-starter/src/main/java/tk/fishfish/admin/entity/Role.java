@@ -20,6 +20,8 @@ import javax.validation.constraints.NotBlank;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Role extends BaseEntity {
 
+    public static final String NAME = "fish:admin:role";
+
     @NotBlank(groups = {Group.Insert.class, Group.Update.class})
     private String code;
 

@@ -30,7 +30,7 @@ import java.util.Optional;
 })
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
-    private final String[] ignorePatterns = new String[]{
+    private final String[] defaultIgnorePatterns = new String[]{
             "/login", "/logout", "/actuator/**",
             "/favicon.ico", "/",
             "/v0/**"
@@ -47,7 +47,7 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
         String[] ignorePatterns = Optional.ofNullable(properties.getIgnorePatterns())
                 .orElse(new String[]{});
         http.authorizeRequests()
-                .antMatchers(this.ignorePatterns).permitAll()
+                .antMatchers(defaultIgnorePatterns).permitAll()
                 .antMatchers(ignorePatterns).permitAll()
                 .anyRequest().authenticated();
     }

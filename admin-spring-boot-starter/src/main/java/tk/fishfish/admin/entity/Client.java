@@ -27,6 +27,8 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Client extends BaseEntity {
 
+    public static final String NAME = "fish:admin:client";
+
     @NotBlank(groups = {Group.Insert.class, Group.Update.class})
     private String name;
 

@@ -6,6 +6,7 @@
 
 - redis jackson 序列化
 - redis 缓存 key 规则修改（用 : 分割）
+- 抽象 Cache<T> 接口
 
 ## 依赖
 
@@ -56,3 +57,4 @@ spring:
 
 - redis jackson 序列化
 - redis 缓存 key 规则修改（用 : 分割）
+- 抽象 Cache<T> 接口

@@ -25,7 +25,10 @@ import java.util.Date;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class User extends BaseEntity {
 
+    public static final String NAME = "fish:admin:user";
+
     @NotBlank(groups = {Group.Insert.class, Group.Update.class})
+    @Column(name = "username", updatable = false)
     private String username;
 
     @NotBlank(groups = Group.Insert.class)

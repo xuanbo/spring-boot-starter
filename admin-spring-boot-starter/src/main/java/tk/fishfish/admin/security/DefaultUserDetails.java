@@ -6,10 +6,11 @@ import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-import tk.fishfish.admin.entity.Role;
 import tk.fishfish.admin.entity.User;
+import tk.fishfish.rest.execption.BizException;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -40,7 +41,8 @@ public class DefaultUserDetails extends org.springframework.security.core.userde
         super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
     }
 
-    public static DefaultUserDetails of(User user, List<Role> roles, Map<String, Object> extra) {
+    @SuppressWarnings("unchecked")
+    public static DefaultUserDetails of(User user, Map<String, Object> extra) {
         boolean enable = Optional.ofNullable(user.getEnable())
                 .orElse(true);
         boolean accountNonExpired = false;
@@ -56,13 +58,18 @@ public class DefaultUserDetails extends org.springframework.security.core.userde
         boolean accountLock = Optional.ofNullable(user.getAccountLock())
                 .orElse(false);
         // 权限
-        List<SimpleGrantedAuthority> authorities = roles.stream()
-                .map(Role::getCode)
-                // 增加ROLE_前缀
-                .map(e -> "ROLE_" + e)
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList());
-        DefaultUserDetails details = new DefaultUserDetails(user.getUsername(), user.getPassword(), enable, accountNonExpired, credentialsNonExpired, !accountLock, authorities);
+        List<SimpleGrantedAuthority> grantedAuthorities;
+        Object authorities = extra.get("authorities");
+        if (authorities == null) {
+            grantedAuthorities = Collections.emptyList();
+        } else {
+            if (authorities instanceof List) {
+                grantedAuthorities = ((List<String>) authorities).stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList());
+            } else {
+                throw BizException.of(500, "不正确的权限配置");
+            }
+        }
+        DefaultUserDetails details = new DefaultUserDetails(user.getUsername(), user.getPassword(), enable, accountNonExpired, credentialsNonExpired, !accountLock, grantedAuthorities);
         // 用户信息
         details.setId(user.getId());
         // 用户额外信息
