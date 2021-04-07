@@ -1,7 +1,6 @@
 package tk.fishfish.mybatis.enums;
 
 import org.springframework.context.annotation.Import;
-import tk.fishfish.mybatis.enums.jackson.EnumTypeConfiguration;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.ElementType;
@@ -18,7 +17,7 @@ import java.lang.annotation.Target;
 @Documented
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-@Import({EnumTypeRegistrar.class, EnumTypeConfiguration.class, EnumControllerConfiguration.class})
+@Import({EnumTypeRegistrar.class})
 public @interface EnableEnumTypes {
 
     /**

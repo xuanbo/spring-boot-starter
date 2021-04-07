@@ -8,6 +8,7 @@ import tk.fishfish.admin.validator.Group;
 
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import java.util.List;
 
@@ -37,6 +38,9 @@ public class Resource extends BaseEntity implements Tree<Resource> {
     private String description;
 
     private String parentId;
+
+    @Min(value = 0, groups = {Group.Insert.class, Group.Update.class})
+    private Integer sort;
 
     @Transient
     private List<Resource> children;

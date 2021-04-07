@@ -8,7 +8,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.zeroturnaround.zip.commons.FileUtils;
-import tk.fishfish.rest.execption.BizException;
+import tk.fishfish.execption.BizException;
 
 import java.io.File;
 import java.io.FileOutputStream;

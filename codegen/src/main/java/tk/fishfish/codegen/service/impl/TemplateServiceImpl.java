@@ -14,7 +14,7 @@ import tk.fishfish.codegen.dto.Table;
 import tk.fishfish.codegen.service.DatabaseService;
 import tk.fishfish.codegen.service.TemplateService;
 import tk.fishfish.codegen.util.StringUtils;
-import tk.fishfish.rest.execption.BizException;
+import tk.fishfish.execption.BizException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;

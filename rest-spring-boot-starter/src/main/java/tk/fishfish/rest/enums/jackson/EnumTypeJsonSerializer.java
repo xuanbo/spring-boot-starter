@@ -1,9 +1,9 @@
-package tk.fishfish.mybatis.enums.jackson;
+package tk.fishfish.rest.enums.jackson;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
-import tk.fishfish.mybatis.enums.EnumType;
+import tk.fishfish.enums.EnumType;
 
 import java.io.IOException;
 

@@ -3,7 +3,7 @@ package tk.fishfish.mybatis.service;
 import tk.fishfish.mybatis.domain.Page;
 import tk.fishfish.mybatis.domain.Pageable;
 import tk.fishfish.mybatis.domain.Sort;
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 
 import java.util.List;
 

@@ -2,7 +2,7 @@ package tk.fishfish.codegen.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import tk.fishfish.mybatis.enums.EnumType;
+import tk.fishfish.enums.EnumType;
 
 /**
  * 驱动类型

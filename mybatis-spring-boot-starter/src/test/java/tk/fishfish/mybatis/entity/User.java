@@ -3,6 +3,7 @@ package tk.fishfish.mybatis.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import tk.fishfish.mybatis.entity.enums.Sex;
+import tk.fishfish.persistence.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Table;

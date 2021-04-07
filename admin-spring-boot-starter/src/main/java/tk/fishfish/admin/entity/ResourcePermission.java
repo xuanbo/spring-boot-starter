@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import tk.fishfish.admin.validator.Group;
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;

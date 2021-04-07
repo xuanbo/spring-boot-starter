@@ -10,8 +10,8 @@ import tk.fishfish.codegen.config.datasource.DataSourceHub;
 import tk.fishfish.codegen.dto.Table;
 import tk.fishfish.codegen.entity.Database;
 import tk.fishfish.codegen.service.DatabaseService;
+import tk.fishfish.execption.BizException;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.fishfish.rest.execption.BizException;
 import tk.fishfish.rest.model.ApiResult;
 
 import javax.sql.DataSource;

@@ -7,7 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import tk.fishfish.admin.entity.User;
-import tk.fishfish.rest.execption.BizException;
+import tk.fishfish.execption.BizException;
 
 import java.util.Collection;
 import java.util.Collections;

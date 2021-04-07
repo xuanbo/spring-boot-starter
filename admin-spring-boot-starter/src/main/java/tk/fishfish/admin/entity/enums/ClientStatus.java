@@ -2,7 +2,7 @@ package tk.fishfish.admin.entity.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import tk.fishfish.mybatis.enums.EnumType;
+import tk.fishfish.enums.EnumType;
 
 /**
  * 客户端状态

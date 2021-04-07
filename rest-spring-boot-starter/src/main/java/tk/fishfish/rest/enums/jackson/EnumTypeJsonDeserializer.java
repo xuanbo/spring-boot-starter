@@ -1,12 +1,12 @@
-package tk.fishfish.mybatis.enums.jackson;
+package tk.fishfish.rest.enums.jackson;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonToken;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.exc.MismatchedInputException;
-import tk.fishfish.mybatis.enums.EnumType;
-import tk.fishfish.mybatis.util.ReflectUtils;
+import tk.fishfish.enums.EnumType;
+import tk.fishfish.util.ReflectUtils;
 
 import java.io.IOException;
 import java.lang.reflect.Field;

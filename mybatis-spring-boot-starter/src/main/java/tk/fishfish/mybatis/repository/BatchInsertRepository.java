@@ -1,7 +1,7 @@
 package tk.fishfish.mybatis.repository;
 
 import org.apache.ibatis.annotations.InsertProvider;
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 import tk.mybatis.mapper.annotation.RegisterMapper;
 
 import java.util.List;

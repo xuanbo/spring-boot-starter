@@ -1,4 +1,4 @@
-package tk.fishfish.mybatis.enums;
+package tk.fishfish.enums;
 
 import lombok.extern.slf4j.Slf4j;
 

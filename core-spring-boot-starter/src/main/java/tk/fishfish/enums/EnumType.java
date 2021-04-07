@@ -1,10 +1,10 @@
-package tk.fishfish.mybatis.enums;
+package tk.fishfish.enums;
 
 /**
  * 枚举
  *
  * @author 奔波儿灞
- * @version 1.3.0
+ * @version 1.5.0
  */
 public interface EnumType {
 

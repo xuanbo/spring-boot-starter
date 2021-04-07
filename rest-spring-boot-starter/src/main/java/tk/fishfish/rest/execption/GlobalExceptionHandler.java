@@ -10,6 +10,7 @@ import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import tk.fishfish.execption.BizException;
 import tk.fishfish.rest.model.ApiResult;
 
 import java.util.HashMap;

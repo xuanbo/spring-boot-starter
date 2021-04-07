@@ -15,8 +15,8 @@ import tk.fishfish.admin.repository.RoleResourceRepository;
 import tk.fishfish.admin.repository.UserRoleRepository;
 import tk.fishfish.admin.security.UserContextHolder;
 import tk.fishfish.admin.service.RoleService;
+import tk.fishfish.execption.BizException;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.fishfish.rest.execption.BizException;
 import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Priority;

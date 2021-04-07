@@ -1,6 +1,6 @@
 package tk.fishfish.mybatis.condition;
 
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 import tk.mybatis.mapper.entity.Condition;
 
 /**

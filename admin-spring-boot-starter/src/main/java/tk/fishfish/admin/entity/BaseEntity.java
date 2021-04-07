@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 
 import javax.persistence.Column;
 import java.util.Date;

@@ -8,7 +8,7 @@ import lombok.EqualsAndHashCode;
 #if (tk.fishfish.codegen.util.TypeUtils::hasDate(columns))
 import org.springframework.format.annotation.DateTimeFormat;
 #end
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Table;

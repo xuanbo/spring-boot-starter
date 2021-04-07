@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+tk.fishfish.excel.autoconfigure.ExcelAutoConfiguration

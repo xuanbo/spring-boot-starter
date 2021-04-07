@@ -1,4 +1,4 @@
-package tk.fishfish.mybatis.entity;
+package tk.fishfish.persistence;
 
 import lombok.Data;
 
@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 实体
  *
  * @author 奔波儿灞
- * @since 1.0
+ * @since 1.5.0
  */
 @Data
 public class Entity implements Serializable {

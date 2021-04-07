@@ -7,8 +7,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import tk.fishfish.mybatis.entity.Entity;
 import tk.fishfish.mybatis.service.BaseService;
+import tk.fishfish.persistence.Entity;
 
 import java.util.List;
 

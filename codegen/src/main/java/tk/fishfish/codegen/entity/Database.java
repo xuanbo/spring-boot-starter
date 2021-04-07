@@ -3,7 +3,7 @@ package tk.fishfish.codegen.entity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import tk.fishfish.codegen.entity.enums.DriverType;
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Table;

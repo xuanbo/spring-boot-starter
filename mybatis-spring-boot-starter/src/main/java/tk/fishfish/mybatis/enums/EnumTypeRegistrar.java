@@ -12,6 +12,8 @@ import org.springframework.core.io.ResourceLoader;
 import org.springframework.core.type.AnnotationMetadata;
 import org.springframework.core.type.filter.AssignableTypeFilter;
 import org.springframework.util.ClassUtils;
+import tk.fishfish.enums.EnumConstantsHolder;
+import tk.fishfish.enums.EnumType;
 
 import java.util.Arrays;
 import java.util.HashSet;

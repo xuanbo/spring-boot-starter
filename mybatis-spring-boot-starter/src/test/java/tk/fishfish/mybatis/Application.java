@@ -9,7 +9,6 @@ import tk.fishfish.mybatis.condition.UserCondition;
 import tk.fishfish.mybatis.entity.User;
 import tk.fishfish.mybatis.entity.enums.Sex;
 import tk.fishfish.mybatis.enums.EnableEnumTypes;
-import tk.fishfish.mybatis.enums.EnumType;
 import tk.fishfish.mybatis.service.UserService;
 
 import java.util.List;

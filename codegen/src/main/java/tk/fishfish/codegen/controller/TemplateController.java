@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import tk.fishfish.codegen.condition.TemplateCondition;
 import tk.fishfish.codegen.dto.TemplateContent;
 import tk.fishfish.codegen.service.TemplateService;
-import tk.fishfish.rest.execption.BizException;
+import tk.fishfish.execption.BizException;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;

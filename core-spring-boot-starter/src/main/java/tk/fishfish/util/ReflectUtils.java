@@ -1,4 +1,4 @@
-package tk.fishfish.mybatis.util;
+package tk.fishfish.util;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 /**
- * 描述
+ * 反射工具类
  *
  * @author 奔波儿灞
  * @version 1.0.0

@@ -8,10 +8,10 @@ import tk.fishfish.mybatis.domain.Page;
 import tk.fishfish.mybatis.domain.PageRequest;
 import tk.fishfish.mybatis.domain.Pageable;
 import tk.fishfish.mybatis.domain.Sort;
-import tk.fishfish.mybatis.entity.Entity;
 import tk.fishfish.mybatis.pagehelper.PageHelper;
 import tk.fishfish.mybatis.repository.Repository;
 import tk.fishfish.mybatis.service.BaseService;
+import tk.fishfish.persistence.Entity;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.entity.Condition;
 

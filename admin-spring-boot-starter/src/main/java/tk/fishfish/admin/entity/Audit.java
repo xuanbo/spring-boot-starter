@@ -7,7 +7,7 @@ import lombok.EqualsAndHashCode;
 import org.springframework.format.annotation.DateTimeFormat;
 import tk.fishfish.admin.entity.enums.AuditStatus;
 import tk.fishfish.admin.entity.enums.AuditType;
-import tk.fishfish.mybatis.entity.Entity;
+import tk.fishfish.persistence.Entity;
 
 import javax.persistence.Column;
 import javax.persistence.Table;

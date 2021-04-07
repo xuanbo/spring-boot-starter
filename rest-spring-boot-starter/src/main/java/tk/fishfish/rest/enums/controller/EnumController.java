@@ -1,10 +1,10 @@
-package tk.fishfish.mybatis.controller;
+package tk.fishfish.rest.enums.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import tk.fishfish.mybatis.enums.EnumConstantsHolder;
+import tk.fishfish.enums.EnumConstantsHolder;
 
 /**
  * 枚举值
