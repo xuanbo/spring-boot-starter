@@ -15,6 +15,9 @@
     <description>custom spring boot starter</description>
 
     <properties>
+        <kotlin.version>1.4.30</kotlin.version>
+        <kotlinx.version>1.4.3</kotlinx.version>
+        <kotlin.compiler.incremental>true</kotlin.compiler.incremental>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>utf-8</project.build.sourceEncoding>
@@ -33,6 +36,7 @@
         <commons-io.version>2.6</commons-io.version>
         <persistence.version>1.0</persistence.version>
         <easyexcel.version>2.2.8</easyexcel.version>
+        <dameng.version>8.1.1.49</dameng.version>
     </properties>
 
     <repositories>
@@ -45,6 +49,22 @@
 
     <dependencyManagement>
         <dependencies>
+            <!-- kotlin dependencies -->
+            <dependency>
+                <groupId>org.jetbrains.kotlin</groupId>
+                <artifactId>kotlin-bom</artifactId>
+                <version>${kotlin.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.jetbrains.kotlinx</groupId>
+                <artifactId>kotlinx-coroutines-bom</artifactId>
+                <version>${kotlinx.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- spring boot dependencies -->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
@@ -122,16 +142,17 @@
     </build>
 
     <modules>
+        <module>core-spring-boot-starter</module>
         <module>mybatis-spring-boot-starter</module>
         <module>rest-spring-boot-starter</module>
         <module>json-spring-boot-starter</module>
-        <module>oauth2-spring-boot-starter</module>
-        <module>admin-spring-boot-starter</module>
-        <module>redis-spring-boot-starter</module>
-        <module>codegen</module>
         <module>actuator-spring-boot-starter</module>
+        <module>redis-spring-boot-starter</module>
+        <module>oauth2-spring-boot-starter</module>
         <module>excel-spring-boot-starter</module>
-        <module>core-spring-boot-starter</module>
+        <module>admin-spring-boot-starter</module>
+        <module>codegen</module>
+        <module>dbrowser</module>
     </modules>
 
 </project>

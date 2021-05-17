@@ -53,7 +53,7 @@ public class ClientServiceImpl extends BaseServiceImpl<Client> implements Client
     }
 
     @Override
-    protected void beforeInsert(Client client) {
+    public void beforeInsert(Client client) {
         String secret = passwordEncoder.encode(client.getSecret());
         client.setSecret(secret);
         client.setCreatedAt(new Date());
@@ -64,23 +64,23 @@ public class ClientServiceImpl extends BaseServiceImpl<Client> implements Client
     }
 
     @Override
-    protected void beforeUpdate(Client client) {
+    public void beforeUpdate(Client client) {
         client.setUpdatedAt(new Date());
         client.setUpdatedBy(UserContextHolder.username());
     }
 
     @Override
-    protected void afterDelete(String id) {
+    public void afterDelete(String id) {
         clientCache.evictById(id);
     }
 
     @Override
-    protected void afterDelete(List<String> ids) {
+    public void afterDelete(List<String> ids) {
         clientCache.evictByIds(ids);
     }
 
     @Override
-    protected void afterDelete(Condition condition) {
+    public void afterDelete(Condition condition) {
         clientCache.evict();
     }
 

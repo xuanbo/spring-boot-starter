@@ -91,7 +91,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    protected void beforeInsert(Role role) {
+    public void beforeInsert(Role role) {
         if (roleCache.code(role.getCode()) != null) {
             throw BizException.of(400, "角色编码重复: %s", role.getCode());
         }
@@ -100,7 +100,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    protected void beforeUpdate(Role role) {
+    public void beforeUpdate(Role role) {
         String roleId = Optional.ofNullable(roleCache.code(role.getCode()))
                 .map(Role::getId)
                 .orElse("");
@@ -112,19 +112,19 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
     }
 
     @Override
-    protected void afterDelete(String id) {
+    public void afterDelete(String id) {
         roleCache.evict();
         permissionCache.evictByRoleId(id);
     }
 
     @Override
-    protected void afterDelete(List<String> ids) {
+    public void afterDelete(List<String> ids) {
         roleCache.evict();
         permissionCache.evictByRoleIds(ids);
     }
 
     @Override
-    protected void afterDelete(Condition condition) {
+    public void afterDelete(Condition condition) {
         roleCache.evict();
         permissionCache.evict();
     }

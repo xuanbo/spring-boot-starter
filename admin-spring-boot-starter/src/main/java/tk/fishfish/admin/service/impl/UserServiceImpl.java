@@ -136,7 +136,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    protected void beforeInsert(User user) {
+    public void beforeInsert(User user) {
         if (userCache.username(user.getUsername()) != null) {
             throw BizException.of(400, "账号重复: %s", user.getUsername());
         }
@@ -147,27 +147,27 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements UserServic
     }
 
     @Override
-    protected void beforeUpdate(User user) {
+    public void beforeUpdate(User user) {
         user.setUpdatedAt(new Date());
         user.setUpdatedBy(UserContextHolder.username());
     }
 
     @Override
-    protected void afterDelete(String id) {
+    public void afterDelete(String id) {
         // user 存在 username 缓存未清除，可以容忍
         userCache.evictById(id);
         roleCache.evictByUserId(id);
     }
 
     @Override
-    protected void afterDelete(List<String> ids) {
+    public void afterDelete(List<String> ids) {
         // user 存在 username 缓存未清除，可以容忍
         userCache.evictByIds(ids);
         roleCache.evictByUserIds(ids);
     }
 
     @Override
-    protected void afterDelete(Condition condition) {
+    public void afterDelete(Condition condition) {
         // 可以容忍短时间脏读 userCache.evict(); roleCache.evict();
     }
 

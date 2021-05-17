@@ -45,29 +45,29 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
     }
 
     @Override
-    protected void beforeInsert(Permission permission) {
+    public void beforeInsert(Permission permission) {
         permission.setCreatedAt(new Date());
         permission.setCreatedBy(UserContextHolder.username());
     }
 
     @Override
-    protected void beforeUpdate(Permission permission) {
+    public void beforeUpdate(Permission permission) {
         permission.setUpdatedAt(new Date());
         permission.setUpdatedBy(UserContextHolder.username());
     }
 
     @Override
-    protected void afterDelete(String id) {
+    public void afterDelete(String id) {
         permissionCache.evict();
     }
 
     @Override
-    protected void afterDelete(List<String> ids) {
+    public void afterDelete(List<String> ids) {
         permissionCache.evict();
     }
 
     @Override
-    protected void afterDelete(Condition condition) {
+    public void afterDelete(Condition condition) {
         permissionCache.evict();
     }
 

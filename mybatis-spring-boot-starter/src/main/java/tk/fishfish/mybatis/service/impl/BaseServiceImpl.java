@@ -11,6 +11,7 @@ import tk.fishfish.mybatis.domain.Sort;
 import tk.fishfish.mybatis.pagehelper.PageHelper;
 import tk.fishfish.mybatis.repository.Repository;
 import tk.fishfish.mybatis.service.BaseService;
+import tk.fishfish.mybatis.service.hook.CrudHook;
 import tk.fishfish.persistence.Entity;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.entity.Condition;
@@ -26,7 +27,7 @@ import java.util.function.Supplier;
  * @author 奔波儿灞
  * @since 1.0
  */
-public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T> {
+public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T>, CrudHook<T> {
 
     @Autowired
     protected Repository<T> repository;
@@ -198,86 +199,6 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
      */
     protected String generateId() {
         return UUID.randomUUID().toString().replaceAll("-", "");
-    }
-
-    /**
-     * Insert前调用
-     *
-     * @param entity 实体
-     */
-    protected void beforeInsert(T entity) {
-    }
-
-    /**
-     * Insert后调用
-     *
-     * @param entity 实体
-     */
-    protected void afterInsert(T entity) {
-    }
-
-    /**
-     * Update前调用
-     *
-     * @param entity 实体
-     */
-    protected void beforeUpdate(T entity) {
-    }
-
-    /**
-     * Update后调用
-     *
-     * @param entity 实体
-     */
-    protected void afterUpdate(T entity) {
-    }
-
-    /**
-     * Delete前调用
-     *
-     * @param id 主键
-     */
-    protected void beforeDelete(String id) {
-    }
-
-    /**
-     * Delete后调用
-     *
-     * @param id 主键
-     */
-    protected void afterDelete(String id) {
-    }
-
-    /**
-     * Delete前调用
-     *
-     * @param ids 主键
-     */
-    protected void beforeDelete(List<String> ids) {
-    }
-
-    /**
-     * Delete后调用
-     *
-     * @param ids 主键
-     */
-    protected void afterDelete(List<String> ids) {
-    }
-
-    /**
-     * Delete前调用
-     *
-     * @param condition 条件
-     */
-    protected void beforeDelete(Condition condition) {
-    }
-
-    /**
-     * Delete后调用
-     *
-     * @param condition 条件
-     */
-    protected void afterDelete(Condition condition) {
     }
 
 }

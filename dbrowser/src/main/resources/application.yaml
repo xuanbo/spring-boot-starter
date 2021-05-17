@@ -1,0 +1,45 @@
+server:
+  port: 9090
+
+spring:
+  datasource:
+    driver-class-name: org.sqlite.JDBC
+    url: jdbc:sqlite:fish.db
+    username: root
+    password: 123456
+    # 初始化数据
+    schema: classpath:db/schema.sql
+    # data: classpath:db/data.sql
+    sql-script-encoding: utf-8
+    # NEVER
+    initialization-mode: ALWAYS
+    hikari:
+      pool-name: hikariPool
+      minimum-idle: 1
+      maximum-pool-size: 4
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+mybatis:
+  # mapper的xml位置
+  mapper-locations: classpath:mapper/*Mapper.xml
+  # 包别名
+  type-aliases-package: tk.fishfish.dbrowser.entity
+  configuration:
+    # 下划线转驼峰
+    map-underscore-to-camel-case: true
+  # 分⻚
+  page-helper:
+    helper-dialect: mysql
+    reasonable: "true"
+    params: count=countSql
+  # 通用mapper
+  mapper:
+    mappers:
+      - tk.fishfish.mybatis.repository.Repository
+    not-empty: true
+
+logging:
+  level:
+    root: INFO
+    tk.fishfish: DEBUG

@@ -100,7 +100,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource> implements Re
     }
 
     @Override
-    protected void beforeInsert(Resource resource) {
+    public void beforeInsert(Resource resource) {
         if (resourceRepository.findByCode(resource.getCode()) != null) {
             throw BizException.of(400, "资源编码重复: %s", resource.getCode());
         }
@@ -109,7 +109,7 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource> implements Re
     }
 
     @Override
-    protected void beforeUpdate(Resource resource) {
+    public void beforeUpdate(Resource resource) {
         String resourceId = Optional.ofNullable(resourceRepository.findByCode(resource.getCode()))
                 .map(Resource::getId)
                 .orElse("");
@@ -121,17 +121,17 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource> implements Re
     }
 
     @Override
-    protected void afterDelete(String id) {
+    public void afterDelete(String id) {
         permissionCache.evict();
     }
 
     @Override
-    protected void afterDelete(List<String> ids) {
+    public void afterDelete(List<String> ids) {
         permissionCache.evict();
     }
 
     @Override
-    protected void afterDelete(Condition condition) {
+    public void afterDelete(Condition condition) {
         permissionCache.evict();
     }
 

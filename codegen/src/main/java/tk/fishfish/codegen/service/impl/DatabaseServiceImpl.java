@@ -50,12 +50,12 @@ public class DatabaseServiceImpl extends BaseServiceImpl<Database> implements Da
     }
 
     @Override
-    protected void afterInsert(Database database) {
+    public void afterInsert(Database database) {
         dataSourceHub.put(database.getId(), dataSourceHub.createDataSource(database));
     }
 
     @Override
-    protected void afterUpdate(Database database) {
+    public void afterUpdate(Database database) {
         dataSourceHub.put(database.getId(), dataSourceHub.createDataSource(database));
     }
 
