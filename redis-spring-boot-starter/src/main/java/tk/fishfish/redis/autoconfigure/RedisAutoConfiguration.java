@@ -3,8 +3,11 @@ package tk.fishfish.redis.autoconfigure;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.databind.Module;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.jsontype.impl.LaissezFaireSubTypeValidator;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.boot.autoconfigure.cache.CacheProperties;
 import org.springframework.cache.annotation.EnableCaching;
@@ -20,6 +23,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.time.Duration;
+import java.util.List;
 
 /**
  * redis配置
@@ -27,18 +31,37 @@ import java.time.Duration;
  * @author 奔波儿灞
  * @version 1.5.0
  */
+@Slf4j
 @Configuration
 @EnableCaching
 @EnableRedisHttpSession
 @AutoConfigureBefore(org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration.class)
 public class RedisAutoConfiguration {
 
+    @Autowired(required = false)
+    private List<Module> modules;
+
+    @Autowired(required = false)
+    private List<JacksonRedisConfigurer> configurers;
+
     @Bean
     public Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer() {
         ObjectMapper om = new ObjectMapper();
-        om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
-        // 范型时用 @class 标志具体的类型
-        om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        if (configurers == null) {
+            log.info("配置默认 redis jackson 序列化实现，可通过 {} 自定义 {}", JacksonRedisConfigurer.class.getName(), ObjectMapper.class.getName());
+            if (modules != null) {
+                modules.forEach(om::registerModule);
+            }
+            om.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.ANY);
+            // 范型时用 @class 标志具体的类型
+            om.activateDefaultTyping(LaissezFaireSubTypeValidator.instance, ObjectMapper.DefaultTyping.NON_FINAL, JsonTypeInfo.As.PROPERTY);
+        } else {
+            log.info("检测到自定义 redis jackson 序列化");
+            // 自定义配置
+            for (JacksonRedisConfigurer configurer : configurers) {
+                configurer.configure(om);
+            }
+        }
         Jackson2JsonRedisSerializer<Object> jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer<>(Object.class);
         jackson2JsonRedisSerializer.setObjectMapper(om);
         return jackson2JsonRedisSerializer;
