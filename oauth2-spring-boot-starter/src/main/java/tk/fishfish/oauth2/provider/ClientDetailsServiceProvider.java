@@ -8,5 +8,8 @@ import org.springframework.security.oauth2.provider.ClientDetailsService;
  * @author 奔波儿灞
  * @version 1.5.0
  */
+@FunctionalInterface
 public interface ClientDetailsServiceProvider extends ClientDetailsService {
+
+
 }

@@ -1,6 +1,7 @@
 package tk.fishfish.admin.service;
 
 import tk.fishfish.admin.dto.Select;
+import tk.fishfish.admin.dto.UserPermission;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  * @version 1.5.0
  */
 public interface UserService {
+
+    UserPermission loadByUsername(String username);
 
     void changePassword(String username, String oldPassword, String newPassword);
 

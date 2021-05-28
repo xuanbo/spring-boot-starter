@@ -6,7 +6,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.StringUtils;
-import tk.fishfish.admin.cache.PermissionCache;
 import tk.fishfish.admin.dto.Select;
 import tk.fishfish.admin.entity.Resource;
 import tk.fishfish.admin.entity.ResourcePermission;
@@ -18,7 +17,6 @@ import tk.fishfish.admin.service.ResourceService;
 import tk.fishfish.admin.util.tree.TreeUtils;
 import tk.fishfish.execption.BizException;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Priority;
 import java.util.Date;
@@ -41,8 +39,6 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource> implements Re
     private final ResourceRepository resourceRepository;
     private final RoleResourceRepository roleResourceRepository;
     private final ResourcePermissionRepository resourcePermissionRepository;
-
-    private final PermissionCache permissionCache;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -95,8 +91,6 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource> implements Re
             log.info("资源授权权限，取消 {} 条，id: {}", unSelected.size(), id);
             resourcePermissionRepository.deleteByResourceIdPermissionIds(id, unSelected);
         }
-        // 清除缓存
-        permissionCache.evict(id);
     }
 
     @Override
@@ -118,21 +112,6 @@ public class ResourceServiceImpl extends BaseServiceImpl<Resource> implements Re
         }
         resource.setUpdatedAt(new Date());
         resource.setUpdatedBy(UserContextHolder.username());
-    }
-
-    @Override
-    public void afterDelete(String id) {
-        permissionCache.evict();
-    }
-
-    @Override
-    public void afterDelete(List<String> ids) {
-        permissionCache.evict();
-    }
-
-    @Override
-    public void afterDelete(Condition condition) {
-        permissionCache.evict();
     }
 
 }

@@ -14,6 +14,7 @@ import org.springframework.security.oauth2.config.annotation.web.configurers.Aut
 import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
 import org.springframework.security.oauth2.provider.token.AccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import tk.fishfish.oauth2.configuration.token.TokenConverterConfiguration;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
@@ -60,6 +61,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
     @Autowired
     private AccessTokenConverter accessTokenConverter;
 
+    @Autowired
+    private AuthorizationServerTokenServices tokenServices;
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
         clients.withClientDetails(clientDetailsService);
@@ -85,7 +89,9 @@ public class AuthorizationServerConfiguration extends AuthorizationServerConfigu
                 .tokenStore(tokenStore)
                 .approvalStore(approvalStore)
                 .authorizationCodeServices(authorizationCodeServices)
-                .accessTokenConverter(accessTokenConverter);
+                .accessTokenConverter(accessTokenConverter)
+                // 不设置会默认创建 DefaultTokenServices
+                .tokenServices(tokenServices);
     }
 
 }

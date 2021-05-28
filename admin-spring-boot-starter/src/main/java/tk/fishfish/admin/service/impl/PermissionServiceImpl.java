@@ -3,13 +3,11 @@ package tk.fishfish.admin.service.impl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import tk.fishfish.admin.cache.PermissionCache;
 import tk.fishfish.admin.entity.Permission;
 import tk.fishfish.admin.repository.ResourcePermissionRepository;
 import tk.fishfish.admin.security.UserContextHolder;
 import tk.fishfish.admin.service.PermissionService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Priority;
 import java.util.Date;
@@ -27,8 +25,6 @@ import java.util.List;
 public class PermissionServiceImpl extends BaseServiceImpl<Permission> implements PermissionService {
 
     private final ResourcePermissionRepository resourcePermissionRepository;
-
-    private final PermissionCache permissionCache;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -54,21 +50,6 @@ public class PermissionServiceImpl extends BaseServiceImpl<Permission> implement
     public void beforeUpdate(Permission permission) {
         permission.setUpdatedAt(new Date());
         permission.setUpdatedBy(UserContextHolder.username());
-    }
-
-    @Override
-    public void afterDelete(String id) {
-        permissionCache.evict();
-    }
-
-    @Override
-    public void afterDelete(List<String> ids) {
-        permissionCache.evict();
-    }
-
-    @Override
-    public void afterDelete(Condition condition) {
-        permissionCache.evict();
     }
 
 }

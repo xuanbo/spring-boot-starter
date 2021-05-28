@@ -17,6 +17,9 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
+
+import java.time.Duration;
 
 /**
  * redis配置
@@ -26,6 +29,7 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  */
 @Configuration
 @EnableCaching
+@EnableRedisHttpSession
 @AutoConfigureBefore(org.springframework.boot.autoconfigure.data.redis.RedisAutoConfiguration.class)
 public class RedisAutoConfiguration {
 
@@ -73,7 +77,10 @@ public class RedisAutoConfiguration {
         ).serializeKeysWith(
                 RedisSerializationContext.SerializationPair.fromSerializer(new StringRedisSerializer())
         );
-        if (redisProperties.getTimeToLive() != null) {
+        // 过期时间默认5分钟
+        if (redisProperties.getTimeToLive() == null) {
+            config = config.entryTtl(Duration.ofMinutes(5));
+        } else {
             config = config.entryTtl(redisProperties.getTimeToLive());
         }
         // 修改默认的cacheName::

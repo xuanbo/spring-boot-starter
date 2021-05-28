@@ -21,7 +21,6 @@ import java.util.Map;
 public class CustomUserAuthenticationConverter extends DefaultUserAuthenticationConverter {
 
     @Override
-    @SuppressWarnings("unchecked")
     public Authentication extractAuthentication(Map<String, ?> map) {
         Authentication authentication = super.extractAuthentication(map);
         Object extra = map.get("extra");
@@ -34,7 +33,7 @@ public class CustomUserAuthenticationConverter extends DefaultUserAuthentication
             String json = JSON.write(((Map<?, ?>) extra).get("user"));
             User user = JSON.read(json, User.class);
             user.setPassword("N/A");
-            DefaultUserDetails principal = DefaultUserDetails.of(user, (Map<String, Object>) extra);
+            DefaultUserDetails principal = DefaultUserDetails.of(user);
             return new UsernamePasswordAuthenticationToken(principal, "N/A", authentication.getAuthorities());
         }
         return authentication;

@@ -6,18 +6,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import org.thymeleaf.util.StringUtils;
-import tk.fishfish.admin.cache.PermissionCache;
-import tk.fishfish.admin.cache.RoleCache;
 import tk.fishfish.admin.dto.Select;
 import tk.fishfish.admin.entity.Role;
 import tk.fishfish.admin.entity.RoleResource;
+import tk.fishfish.admin.repository.RoleRepository;
 import tk.fishfish.admin.repository.RoleResourceRepository;
 import tk.fishfish.admin.repository.UserRoleRepository;
 import tk.fishfish.admin.security.UserContextHolder;
 import tk.fishfish.admin.service.RoleService;
 import tk.fishfish.execption.BizException;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Priority;
 import java.util.Date;
@@ -37,11 +35,9 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleService {
 
+    private final RoleRepository roleRepository;
     private final UserRoleRepository userRoleRepository;
     private final RoleResourceRepository roleResourceRepository;
-
-    private final RoleCache roleCache;
-    private final PermissionCache permissionCache;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -86,13 +82,11 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
             log.info("角色授权资源，取消 {} 条，id: {}", unSelected.size(), id);
             roleResourceRepository.deleteByRoleIdAndResourceIds(id, unSelected);
         }
-        // 清除缓存
-        permissionCache.evictByRoleId(id);
     }
 
     @Override
     public void beforeInsert(Role role) {
-        if (roleCache.code(role.getCode()) != null) {
+        if (roleRepository.findByCode(role.getCode()) != null) {
             throw BizException.of(400, "角色编码重复: %s", role.getCode());
         }
         role.setCreatedAt(new Date());
@@ -101,7 +95,7 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
 
     @Override
     public void beforeUpdate(Role role) {
-        String roleId = Optional.ofNullable(roleCache.code(role.getCode()))
+        String roleId = Optional.ofNullable(roleRepository.findByCode(role.getCode()))
                 .map(Role::getId)
                 .orElse("");
         if (!StringUtils.equals(roleId, role.getId())) {
@@ -109,24 +103,6 @@ public class RoleServiceImpl extends BaseServiceImpl<Role> implements RoleServic
         }
         role.setUpdatedAt(new Date());
         role.setUpdatedBy(UserContextHolder.username());
-    }
-
-    @Override
-    public void afterDelete(String id) {
-        roleCache.evict();
-        permissionCache.evictByRoleId(id);
-    }
-
-    @Override
-    public void afterDelete(List<String> ids) {
-        roleCache.evict();
-        permissionCache.evictByRoleIds(ids);
-    }
-
-    @Override
-    public void afterDelete(Condition condition) {
-        roleCache.evict();
-        permissionCache.evict();
     }
 
 }

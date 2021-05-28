@@ -1,5 +1,7 @@
 package tk.fishfish.admin.service;
 
+import tk.fishfish.admin.entity.Client;
+
 /**
  * 客户端
  *
@@ -7,4 +9,7 @@ package tk.fishfish.admin.service;
  * @version 1.5.0
  */
 public interface ClientService {
+
+    Client findById(String id);
+
 }

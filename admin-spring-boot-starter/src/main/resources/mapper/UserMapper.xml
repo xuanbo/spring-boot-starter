@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="tk.fishfish.admin.repository.UserRepository">
+
+    <resultMap id="base" type="tk.fishfish.admin.entity.User">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="username" property="username" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="phone" property="phone" jdbcType="VARCHAR"/>
+        <result column="account_expire_at" property="accountExpireAt" jdbcType="DATE"/>
+        <result column="account_lock" property="accountLock" jdbcType="BOOLEAN"/>
+        <result column="credentials_expire_at" property="credentialsExpireAt" jdbcType="DATE"/>
+        <result column="enable" property="enable" jdbcType="BOOLEAN"/>
+        <result column="created_at" property="createdAt" jdbcType="DATE"/>
+        <result column="created_by" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="updated_at" property="updatedAt" jdbcType="DATE"/>
+        <result column="updated_by" property="updatedBy" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="complex" type="tk.fishfish.admin.dto.UserPermission" extends="base">
+        <collection property="roles" ofType="java.lang.String">
+            <result column="r_code"/>
+        </collection>
+        <collection property="resources" ofType="java.lang.String">
+            <result column="re_code"/>
+        </collection>
+        <collection property="permissions" ofType="java.lang.String">
+            <result column="p_id"/>
+        </collection>
+    </resultMap>
+
+    <select id="loadByUsername" resultMap="complex">
+        SELECT
+        u.id as id,
+        u.username as username,
+        u.password as password,
+        u.name as name,
+        u.sex as sex,
+        u.email as email,
+        u.phone as phone,
+        u.account_expire_at as account_expire_at,
+        u.account_lock as account_lock,
+        u.credentials_expire_at as credentials_expire_at,
+        u.enable as enable,
+        u.created_at as created_at,
+        u.created_by as created_by,
+        u.updated_at as updated_at,
+        u.updated_by as updated_by,
+        r.code as r_code,
+        re.code as re_code,
+        p.id as p_id
+        FROM sys_user u
+        LEFT JOIN sys_user_role ur ON u.id = ur.user_id
+        LEFT JOIN sys_role r ON r.id = ur.role_id
+        LEFT JOIN sys_role_resource rre ON rre.role_id = r.id
+        LEFT JOIN sys_resource re ON re.id = rre.resource_id
+        LEFT JOIN sys_resource_permission rp ON rp.resource_id = re.id
+        LEFT JOIN sys_permission p ON p.id = rp.permission_id
+        WHERE u.username = #{username}
+    </select>
+
+</mapper>

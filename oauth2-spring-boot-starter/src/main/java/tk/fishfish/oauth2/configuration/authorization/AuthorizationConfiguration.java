@@ -13,12 +13,13 @@ import org.springframework.security.oauth2.provider.approval.ApprovalStore;
 import org.springframework.security.oauth2.provider.approval.TokenApprovalStore;
 import org.springframework.security.oauth2.provider.client.BaseClientDetails;
 import org.springframework.security.oauth2.provider.code.AuthorizationCodeServices;
-import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
-import org.springframework.security.oauth2.provider.token.ResourceServerTokenServices;
+import org.springframework.security.oauth2.provider.token.AuthorizationServerTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStore;
 import org.springframework.security.oauth2.provider.token.store.redis.RedisTokenStoreSerializationStrategy;
 import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
+import tk.fishfish.oauth2.provider.OAuth2AuthenticationProvider;
+import tk.fishfish.oauth2.token.CustomTokenServices;
 import tk.fishfish.oauth2.token.JdkSerializationStrategy;
 import tk.fishfish.oauth2.token.RedisAuthorizationCodeServices;
 
@@ -105,18 +106,21 @@ public class AuthorizationConfiguration {
     }
 
     @Bean
-    public ResourceServerTokenServices tokenServices(
+    public AuthorizationServerTokenServices tokenServices(
             TokenStore tokenStore,
             ClientDetailsServiceProvider clientDetailsService,
+            @Autowired(required = false) OAuth2AuthenticationProvider oAuth2AuthenticationProvider,
             AuthorizationProperties properties
     ) {
-        DefaultTokenServices tokenServices = new DefaultTokenServices();
+        CustomTokenServices tokenServices = new CustomTokenServices();
         tokenServices.setTokenStore(tokenStore);
         tokenServices.setSupportRefreshToken(properties.getSupportRefreshToken());
         tokenServices.setClientDetailsService(clientDetailsService);
         tokenServices.setAccessTokenValiditySeconds(properties.getAccessTokenValiditySeconds());
         tokenServices.setRefreshTokenValiditySeconds(properties.getRefreshTokenValiditySeconds());
         tokenServices.setReuseRefreshToken(false);
+        // 认证重建
+        tokenServices.setOAuth2AuthenticationProvider(oAuth2AuthenticationProvider);
         return tokenServices;
     }
 

@@ -1,27 +1,21 @@
 package tk.fishfish.admin.service.impl;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheConfig;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.provider.ClientDetails;
-import org.springframework.security.oauth2.provider.ClientRegistrationException;
-import org.springframework.security.oauth2.provider.NoSuchClientException;
 import org.springframework.stereotype.Service;
-import tk.fishfish.admin.cache.ClientCache;
+import org.springframework.transaction.annotation.Transactional;
 import tk.fishfish.admin.entity.Client;
 import tk.fishfish.admin.entity.enums.ClientStatus;
-import tk.fishfish.admin.security.DefaultClientDetails;
 import tk.fishfish.admin.security.UserContextHolder;
-import tk.fishfish.admin.security.exception.ClientExpiredException;
-import tk.fishfish.admin.security.exception.ClientStatusException;
 import tk.fishfish.admin.service.ClientService;
 import tk.fishfish.mybatis.service.impl.BaseServiceImpl;
-import tk.fishfish.oauth2.provider.ClientDetailsServiceProvider;
-import tk.mybatis.mapper.entity.Condition;
 
 import javax.annotation.Priority;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * 客户端
@@ -32,24 +26,57 @@ import java.util.Optional;
 @Service
 @Priority(10)
 @RequiredArgsConstructor
-public class ClientServiceImpl extends BaseServiceImpl<Client> implements ClientService, ClientDetailsServiceProvider {
+@CacheConfig(cacheNames = Client.NAME)
+public class ClientServiceImpl extends BaseServiceImpl<Client> implements ClientService {
 
     private final PasswordEncoder passwordEncoder;
 
-    private final ClientCache clientCache;
+    @Override
+    @Cacheable(key = "'id:' + #p0")
+    public Client findById(String id) {
+        return super.findById(id);
+    }
 
     @Override
-    public ClientDetails loadClientByClientId(String clientId) throws ClientRegistrationException {
-        Client client = Optional.ofNullable(clientCache.id(clientId))
-                .orElseThrow(() -> new NoSuchClientException("客户端不存在: " + clientId));
-        if (client.getStatus() != ClientStatus.PASS) {
-            throw new ClientStatusException("客户端未通过审核: " + clientId);
-        }
-        Date expireAt = client.getExpireAt();
-        if (expireAt != null && expireAt.before(new Date())) {
-            throw new ClientExpiredException("客户端已过期: " + clientId);
-        }
-        return DefaultClientDetails.of(client);
+    @CacheEvict(key = "'id:' + #p0.id")
+    @Transactional(rollbackFor = Exception.class)
+    public void update(Client client) {
+        super.update(client);
+    }
+
+    @Override
+    @CacheEvict(key = "'id:' + #p0.id")
+    @Transactional(rollbackFor = Exception.class)
+    public void updateSelective(Client client) {
+        super.updateSelective(client);
+    }
+
+    @Override
+    @CacheEvict(key = "'id:' + #p0.id", condition = "#p0.id != null")
+    @Transactional(rollbackFor = Exception.class)
+    public void save(Client client) {
+        super.save(client);
+    }
+
+    @Override
+    @CacheEvict(key = "'id:' + #p0")
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteById(String id) {
+        super.deleteById(id);
+    }
+
+    @Override
+    @CacheEvict(key = "id", allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteByIds(List<String> ids) {
+        super.deleteByIds(ids);
+    }
+
+    @Override
+    @CacheEvict(allEntries = true)
+    @Transactional(rollbackFor = Exception.class)
+    public void delete(Object condition) {
+        super.delete(condition);
     }
 
     @Override
@@ -67,21 +94,6 @@ public class ClientServiceImpl extends BaseServiceImpl<Client> implements Client
     public void beforeUpdate(Client client) {
         client.setUpdatedAt(new Date());
         client.setUpdatedBy(UserContextHolder.username());
-    }
-
-    @Override
-    public void afterDelete(String id) {
-        clientCache.evictById(id);
-    }
-
-    @Override
-    public void afterDelete(List<String> ids) {
-        clientCache.evictByIds(ids);
-    }
-
-    @Override
-    public void afterDelete(Condition condition) {
-        clientCache.evict();
     }
 
 }
