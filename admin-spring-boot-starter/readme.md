@@ -44,28 +44,30 @@ mybatis:
   type-aliases-package: tk.fishfish.mybatis.entity
   configuration:
     # 下划线转驼峰
-    map-underscore-to-camel-case: true
-  # 分⻚
+     map-underscore-to-camel-case: true
+     # 分⻚
   page-helper:
-    helper-dialect: mysql
-    reasonable: "true"
-    params: count=countSql
-  # 通用mapper
+     helperDialect: mysql
+     reasonable: "true"
+     params: count=countSql
+   # 通用mapper
   mapper:
-    mappers:
-      - tk.fishfish.mybatis.repository.Repository
-    not-empty: true
-    safe-delete: true
+     mappers:
+        - tk.fishfish.mybatis.repository.Repository
+     notEmpty: true
+     # mysql字段增加``
+     wrapKeyword: "`{0}`"
+     safeDelete: true
 
 fish:
-  oauth2:
-    # 认证服务器
-    authorization:
-      # token存储redis前缀
-      tokenPrefix: 'fish:oauth2:'
-      # 是否支持refresh token
-      supportRefreshToken: true
-      # access_token过期时间
+   oauth2:
+      # 认证服务器
+      authorization:
+         # token存储redis前缀
+         tokenPrefix: 'fish:oauth2:'
+         # 是否支持refresh token
+         supportRefreshToken: true
+         # access_token过期时间
       accessTokenValiditySeconds: 3600
       # refresh_token过期时间
       refreshTokenValiditySeconds: 7200

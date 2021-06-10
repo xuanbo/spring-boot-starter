@@ -43,14 +43,16 @@ mybatis:
     map-underscore-to-camel-case: true
   # 分⻚
   page-helper:
-    helper-dialect: mysql
+    helperDialect: mysql
     reasonable: "true"
     params: count=countSql
   # 通用mapper
   mapper:
     mappers:
       - tk.fishfish.mybatis.repository.Repository
-    not-empty: true
+    notEmpty: true
+    # mysql字段增加``
+    wrapKeyword: "`{0}`"
 ```
 
 ### enum
