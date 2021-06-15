@@ -1,0 +1,15 @@
+spring:
+  datasource:
+    driver-class-name: dm.jdbc.driver.DmDriver
+    url: jdbc:dm://192.168.101.32:5236
+    username: egova
+    password: egova2021
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/master.xml
+    database-change-log-table: TEST_DATABASECHANGELOG
+    database-change-log-lock-table: TEST_DDATABASECHANGELOGLOCK
+
+logging:
+  level:
+    tk.fishfish: DEBUG

@@ -153,6 +153,7 @@
         <module>admin-spring-boot-starter</module>
         <module>codegen</module>
         <module>dbrowser</module>
+        <module>liquibase-spring-boot-starter</module>
     </modules>
 
 </project>
