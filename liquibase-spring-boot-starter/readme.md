@@ -5,7 +5,6 @@
 ## 依赖
 
 ```xml
-
 <dependency>
     <groupId>tk.fishfish</groupId>
     <artifactId>liquibase-spring-boot-starter</artifactId>

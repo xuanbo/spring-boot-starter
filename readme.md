@@ -52,13 +52,17 @@
 
 - [codegen](./codegen)
 
-    - 可视化代码生成器服务，适配 admin-spring-boot-starter 模块约定
-    - 内嵌 sqlite ，连接外部数据库（MySQL）进行代码生成
-    - 自定义模板
+  - 可视化代码生成器服务，适配 admin-spring-boot-starter 模块约定
+  - 内嵌 sqlite ，连接外部数据库（MySQL）进行代码生成
+  - 自定义模板
 
 - [excel-spring-boot-starter](./excel-spring-boot-starter)
 
-    - 利用 easyexcel 进行数据导入导出
+  - 利用 easyexcel 进行数据导入导出
+
+- [liquibase-spring-boot-starter](./liquibase-spring-boot-starter)
+
+  - 封装 liquibase ，支持国产数据库：达梦
 
 ## 依赖
 

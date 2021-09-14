@@ -1,5 +1,8 @@
 package tk.fishfish.json.util;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import tk.fishfish.json.core.JacksonJson;
+import tk.fishfish.json.core.JacksonJsonPath;
 import tk.fishfish.json.core.Json;
 import tk.fishfish.json.core.JsonPath;
 
@@ -15,8 +18,15 @@ import java.util.Map;
  */
 public final class JSON {
 
-    private static Json json = null;
-    private static JsonPath jsonPath = null;
+    private static Json json;
+    private static JsonPath jsonPath;
+
+    static {
+        // 默认值
+        ObjectMapper om = new ObjectMapper();
+        json = new JacksonJson(om);
+        jsonPath = new JacksonJsonPath(om);
+    }
 
     private JSON() {
     }
