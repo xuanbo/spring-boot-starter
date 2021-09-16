@@ -147,7 +147,7 @@ public class DefaultConditionParser implements ConditionParser {
                     if (StringUtils.isEmpty(property)) {
                         property = fieldCondition.getField().getName();
                     }
-                    criteria.andGreaterThan(property, value);
+                    criteria.andLessThan(property, value);
                 }
                 break;
             case LTE:
@@ -156,7 +156,7 @@ public class DefaultConditionParser implements ConditionParser {
                     if (StringUtils.isEmpty(property)) {
                         property = fieldCondition.getField().getName();
                     }
-                    criteria.andGreaterThanOrEqualTo(property, value);
+                    criteria.andLessThanOrEqualTo(property, value);
                 }
                 break;
             case IN:
