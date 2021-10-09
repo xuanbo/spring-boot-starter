@@ -1,4 +1,5 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+tk.fishfish.mybatis.autoconfigure.SnowflakeAutoConfiguration,\
 tk.fishfish.mybatis.autoconfigure.MybatisAutoConfiguration,\
 tk.fishfish.mybatis.autoconfigure.MapperAutoConfiguration,\
 tk.fishfish.mybatis.autoconfigure.PageHelperAutoConfiguration,\

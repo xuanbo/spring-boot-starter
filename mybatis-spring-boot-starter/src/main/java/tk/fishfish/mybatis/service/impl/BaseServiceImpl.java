@@ -2,7 +2,6 @@ package tk.fishfish.mybatis.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import tk.fishfish.mybatis.condition.ConditionParser;
 import tk.fishfish.mybatis.domain.Page;
@@ -38,19 +37,13 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
 
     protected final Class<? extends Entity> entityClazz;
 
-    protected final Snowflake snowflake;
-
-    @Value("mybatis.snowflake.datacenterId:1")
-    protected Long datacenterId;
-
-    @Value("mybatis.snowflake.workerId:1")
-    protected Long workerId;
+    @Autowired
+    protected Snowflake snowflake;
 
     @SuppressWarnings("unchecked")
     public BaseServiceImpl() {
         ParameterizedType parameterizedType = (ParameterizedType) this.getClass().getGenericSuperclass();
         entityClazz = (Class<? extends Entity>) parameterizedType.getActualTypeArguments()[0];
-        snowflake = new Snowflake(datacenterId, workerId);
     }
 
     @Override
