@@ -16,7 +16,7 @@ import java.util.List;
  * 通用API
  *
  * @author 奔波儿灞
- * @since 1.0
+ * @since 1.0.0
  */
 public abstract class BaseController<T extends Entity> {
 

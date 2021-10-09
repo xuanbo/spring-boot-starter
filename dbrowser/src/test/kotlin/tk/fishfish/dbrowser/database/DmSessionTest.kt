@@ -1,5 +1,6 @@
 package tk.fishfish.dbrowser.database
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.junit.After
 import org.junit.Test
 import org.slf4j.Logger
@@ -43,21 +44,26 @@ class DmSessionTest {
 
     @Test
     fun table() {
-        val table = session.table("EGOVA", "cata_resource")
+        val table = session.table("EGOVA", "databasechangeloglock")
         logger.info("table: {}", table)
     }
 
     @Test
     fun count() {
-        val count = session.count("EGOVA", "SELECT * FROM pump_stage")
-        logger.info("count: {}", count)
+        val result1 = session.query("EGOVA", "select * from com_schema", 1, 1000)
+        val om = ObjectMapper()
+        logger.info("result: {}", result1)
+        val json = om.writeValueAsString(result1)
+        logger.info("json: {}", json)
+//        val result2 = session.execute("EGOVA", "update databasechangeloglock set LOCKED = 0")
+//        logger.info("result: {}", result2)
     }
 
     @Test
     fun query() {
         val list = session.query(
             "EGOVA",
-            "SELECT id, columns, raw, type, logType, execId, jobId, scheduleId, error, timestamp, createTime FROM pump_stage ORDER BY createTime DESC"
+            "select j.name as name, sum(sl.totalReadRecords) as count from pump_schedule_log sl left join pump_job j on sl.jobId = j.id where sl.status = 2 group by j.name having sum(sl.totalReadRecords) is not null order by count desc"
         )
         logger.info("list: {}", list)
     }

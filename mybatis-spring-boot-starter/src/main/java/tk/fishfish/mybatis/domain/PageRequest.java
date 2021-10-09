@@ -6,7 +6,7 @@ import lombok.Data;
  * 分页实现
  *
  * @author 奔波儿灞
- * @since 1.0
+ * @since 1.0.0
  */
 @Data
 public class PageRequest implements Pageable {

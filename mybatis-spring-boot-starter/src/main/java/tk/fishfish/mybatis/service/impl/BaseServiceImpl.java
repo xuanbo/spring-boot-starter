@@ -2,6 +2,7 @@ package tk.fishfish.mybatis.service.impl;
 
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.transaction.annotation.Transactional;
 import tk.fishfish.mybatis.condition.ConditionParser;
 import tk.fishfish.mybatis.domain.Page;
@@ -13,19 +14,19 @@ import tk.fishfish.mybatis.repository.Repository;
 import tk.fishfish.mybatis.service.BaseService;
 import tk.fishfish.mybatis.service.hook.CrudHook;
 import tk.fishfish.persistence.Entity;
+import tk.fishfish.util.Snowflake;
 import tk.mybatis.mapper.MapperException;
 import tk.mybatis.mapper.entity.Condition;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;
-import java.util.UUID;
 import java.util.function.Supplier;
 
 /**
  * 通用服务实现
  *
  * @author 奔波儿灞
- * @since 1.0
+ * @since 1.0.0
  */
 public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T>, CrudHook<T> {
 
@@ -37,10 +38,19 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
 
     protected final Class<? extends Entity> entityClazz;
 
+    protected final Snowflake snowflake;
+
+    @Value("mybatis.snowflake.datacenterId:1")
+    protected Long datacenterId;
+
+    @Value("mybatis.snowflake.workerId:1")
+    protected Long workerId;
+
     @SuppressWarnings("unchecked")
     public BaseServiceImpl() {
         ParameterizedType parameterizedType = (ParameterizedType) this.getClass().getGenericSuperclass();
         entityClazz = (Class<? extends Entity>) parameterizedType.getActualTypeArguments()[0];
+        snowflake = new Snowflake(datacenterId, workerId);
     }
 
     @Override
@@ -198,7 +208,7 @@ public abstract class BaseServiceImpl<T extends Entity> implements BaseService<T
      * @return 主键
      */
     protected String generateId() {
-        return UUID.randomUUID().toString().replaceAll("-", "");
+        return Long.toString(snowflake.nextId());
     }
 
 }
